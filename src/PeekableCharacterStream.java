@@ -13,5 +13,4 @@ public interface PeekableCharacterStream{
     public int peekAheadChar(int ahead);
     public int getNextChar();
     public void close();
-    public void testPrint(String thingToPrint);
 }
