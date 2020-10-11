@@ -1,4 +1,6 @@
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 // Create the class that will implement the interface
 public class PeekableCharacterStreamClass implements PeekableCharacterStream {
@@ -7,7 +9,19 @@ public class PeekableCharacterStreamClass implements PeekableCharacterStream {
     String contentOfFile;
 
     // Constructor
-    public PeekableCharacterStreamClass(String fileToRead) {
+    public PeekableCharacterStreamClass(String fileToRead) throws FileNotFoundException, IOException {
+        String fileName = "/home/sysadat/ECS-140A/Project-001/test.txt";
+
+        try (FileInputStream fis = new FileInputStream(fileName)) {
+
+            char c1 = (char) fis.read();
+            char c2 = (char) fis.read();
+            char c3 = (char) fis.read();
+
+            System.out.println(c1);
+            System.out.println(c2);
+            System.out.println(c3);
+        }
         contentOfFile = fileToRead;
         currentIndex = 0;
     }
@@ -15,7 +29,7 @@ public class PeekableCharacterStreamClass implements PeekableCharacterStream {
     // Methods of the interface
 
     // Returns true if more characters are available, false otherwise
-    public boolean moreAvailable() {
+ /*    public boolean moreAvailable() {
 
     }
 
@@ -42,9 +56,10 @@ public class PeekableCharacterStreamClass implements PeekableCharacterStream {
      // Closes the stream.
      public void close() {
         
-    }
+    } */
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        PeekableCharacterStreamClass myObj = new PeekableCharacterStreamClass("test");
+
     }
 }
