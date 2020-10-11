@@ -1,9 +1,7 @@
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 // Create the class that will implement the interface
 public class PCSClass implements PeekableCharacterStream {
@@ -13,22 +11,21 @@ public class PCSClass implements PeekableCharacterStream {
 
     // Constructor
     public PCSClass(String inputtedFileName) throws FileNotFoundException, IOException {
-        String fileName = inputtedFileName;
+        // Get the name of the textfile from the command line, and then write the file's contents into a string
+        Path fileName = Path.of(inputtedFileName);
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(
-                new FileInputStream(fileName), StandardCharsets.UTF_8));) {
+        System.out.println("The path is: " + fileName);
 
-            String line;
-            
-            while ((line = br.readLine()) != null) {
-                
-                System.out.println(line);
-            }
-        }
-        System.out.println();
+        String fileAsString = Files.readString(fileName);
+
+        System.out.println("Printing now ...");
+        System.out.println(fileAsString);
         
-        contentOfFile = inputtedFileName;
+        contentOfFile = fileAsString;
         currentIndex = 0;
+
+        System.out.println("Content of file is: " + contentOfFile);
+
     }
 
     // Methods of the interface
@@ -74,7 +71,7 @@ public class PCSClass implements PeekableCharacterStream {
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
         // TODO: Delete this testing
-        System.out.println(inputtedFileName);
+        System.out.println("Inputted file name is: " + inputtedFileName);
 
         PCSClass myObj = new PCSClass(inputtedFileName);
 
