@@ -3,17 +3,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 // Create the class that will implement the interface
-public class PCBClass implements PeekableCharacterStream {
+public class PCSClass implements PeekableCharacterStream {
     // Class attributes
     int currentIndex;
     String contentOfFile;
 
     // Constructor
-    public PCBClass(String fileToRead) throws FileNotFoundException, IOException {
-        String fileName = "/home/sysadat/ECS-140A/Project-001/test.txt";
+    public PCSClass(String inputtedFileName) throws FileNotFoundException, IOException {
+        String fileName = inputtedFileName;
 
         try (FileInputStream fis = new FileInputStream(fileName)) {
-
+            
             char c1 = (char) fis.read();
             char c2 = (char) fis.read();
             char c3 = (char) fis.read();
@@ -22,7 +22,7 @@ public class PCBClass implements PeekableCharacterStream {
             System.out.println(c2);
             System.out.println(c3);
         }
-        contentOfFile = fileToRead;
+        contentOfFile = inputtedFileName;
         currentIndex = 0;
     }
 
@@ -59,7 +59,19 @@ public class PCBClass implements PeekableCharacterStream {
     } */
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        PCBClass myObj = new PCBClass("test");
+        
+        // If the user did not specify a file or put more than one file
+        if (args.length != 1) {
+            System.out.println("Please enter the name of the file that you wish to use.");
+            System.exit(-1);
+        }
+
+        // Get the name of the file inputted from the user in the command line
+        String inputtedFileName = args[0];
+        // TODO: Delete this testing
+        System.out.println(inputtedFileName);
+
+        PCSClass myObj = new PCSClass(inputtedFileName);
 
     }
 }
