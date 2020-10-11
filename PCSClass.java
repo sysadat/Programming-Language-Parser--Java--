@@ -1,6 +1,9 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 // Create the class that will implement the interface
 public class PCSClass implements PeekableCharacterStream {
@@ -12,16 +15,18 @@ public class PCSClass implements PeekableCharacterStream {
     public PCSClass(String inputtedFileName) throws FileNotFoundException, IOException {
         String fileName = inputtedFileName;
 
-        try (FileInputStream fis = new FileInputStream(fileName)) {
-            
-            char c1 = (char) fis.read();
-            char c2 = (char) fis.read();
-            char c3 = (char) fis.read();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                new FileInputStream(fileName), StandardCharsets.UTF_8));) {
 
-            System.out.println(c1);
-            System.out.println(c2);
-            System.out.println(c3);
+            String line;
+            
+            while ((line = br.readLine()) != null) {
+                
+                System.out.println(line);
+            }
         }
+        System.out.println();
+        
         contentOfFile = inputtedFileName;
         currentIndex = 0;
     }
