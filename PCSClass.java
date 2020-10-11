@@ -14,28 +14,34 @@ public class PCSClass implements PeekableCharacterStream {
         // Get the name of the textfile from the command line, and then write the file's contents into a string
         Path fileName = Path.of(inputtedFileName);
 
-        System.out.println("The path is: " + fileName);
+        // System.out.println("The path is: " + fileName);
 
         String fileAsString = Files.readString(fileName);
 
-        System.out.println("Printing now ...");
-        System.out.println(fileAsString);
+        // System.out.println("Printing now ...");
+        // System.out.println(fileAsString);
         
         contentOfFile = fileAsString;
-        currentIndex = 0;
+        currentIndex = 2;
 
-        System.out.println("Content of file is: " + contentOfFile);
+        // System.out.println("Content of file is: " + contentOfFile);
 
     }
 
     // Methods of the interface
 
     // Returns true if more characters are available, false otherwise
- /*    public boolean moreAvailable() {
-
+    public boolean moreAvailable() {
+        int contentOfFileLength = contentOfFile.length();
+        System.out.println("Length of string is: " + contentOfFileLength);
+        if (currentIndex == (contentOfFileLength - 1)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    // Returns the next character that would be returned without consuming
+/*   // Returns the next character that would be returned without consuming
     // the character. If no more characters are available -1 is returned.
     public int peekNextChar() {
         
@@ -70,10 +76,15 @@ public class PCSClass implements PeekableCharacterStream {
 
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
-        // TODO: Delete this testing
-        System.out.println("Inputted file name is: " + inputtedFileName);
+        // System.out.println("Inputted file name is: " + inputtedFileName);
 
         PCSClass myObj = new PCSClass(inputtedFileName);
+        boolean result = myObj.moreAvailable();
+
+        // System.out.println("Result is: " + result);
+        // System.out.println("Content of file is: " + myObj.contentOfFile);
+        // System.out.println("Current index is: " + myObj.currentIndex);
+        // System.out.println("Character at current index is: " + myObj.contentOfFile.charAt(myObj.currentIndex));
 
     }
 }
