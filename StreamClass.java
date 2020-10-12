@@ -12,6 +12,7 @@ public class StreamClass implements PeekableCharacterStream {
     // Constructor
     public StreamClass(String inputtedFileName) throws IOException {
         // Get the name of the textfile from the command line, and then write the file's contents into a string
+        // https://stackoverflow.com/questions/15161553/how-to-convert-fileinputstream-into-string-in-java
         fis = new FileInputStream(inputtedFileName);
         StringBuilder fileAsString = new StringBuilder();
         int currentCharacter;

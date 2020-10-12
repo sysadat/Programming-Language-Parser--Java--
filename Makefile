@@ -1,3 +1,4 @@
+# https://www.cs.swarthmore.edu/~newhall/unixhelp/javamakefiles.html
 JFLAGS = -g
 JC = javac
 .SUFFIXES: .java .class
@@ -7,7 +8,9 @@ JC = javac
 CLASSES = \
 		Token.java \
 		PeekableCharacterStream.java \
-		StreamClass.java
+		StreamClass.java \
+		Scanner.java \
+		CSVParser.java
 
 default: classes
 
