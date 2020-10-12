@@ -87,7 +87,7 @@ public class PCSClass implements PeekableCharacterStream {
     // available -1 is returned.
     public int getNextChar() {
         boolean isAvaliable = moreAvailable();
-        // System.out.println("In peekNextChar, result is: " + isAvaliable);
+        System.out.println("In getNextChar, result is: " + isAvaliable);
         char currentCharacter;
         int characterAsInt = 0;
         if (isAvaliable) {
@@ -95,6 +95,7 @@ public class PCSClass implements PeekableCharacterStream {
             // System.out.println("Current character is: " + currentCharacter);
             // System.out.println("characterAsInt before is: " + characterAsInt);
             characterAsInt = currentCharacter;
+            currentIndex++;
             // System.out.println("characterAsInt is: " + characterAsInt);
             return characterAsInt;
         } else {
@@ -119,17 +120,24 @@ public class PCSClass implements PeekableCharacterStream {
         String inputtedFileName = args[0];
         // System.out.println("Inputted file name is: " + inputtedFileName);
 
-        PCSClass myObj = new PCSClass(inputtedFileName);
-        boolean result = myObj.moreAvailable();
-        int peekResult = myObj.peekNextChar();
+        PCSClass PCSObject = new PCSClass(inputtedFileName);
+        // System.out.println("Current index is now : " + PCSObject.currentIndex);
+
+        // System.out.println("Peek result is: " + PCSObject.peekNextChar());
+        // System.out.println("getNextResult result is: " + PCSObject.getNextChar());
+        // System.out.println("Current index is now : " + PCSObject.currentIndex);
+
+        // System.out.println("Peek result is: " + PCSObject.peekNextChar());
+        // System.out.println("getNextResult result is: " + PCSObject.getNextChar());
+        // System.out.println("Current index is now : " + PCSObject.currentIndex);
         int peekAheadVal = 1;
-        // System.out.println("Peek Ahead result is: " + myObj.peekAheadChar(peekAheadVal));
+        // System.out.println("Peek Ahead result is: " + PCSObject.peekAheadChar(peekAheadVal));
         // System.out.println("Peek result is: " + peekResult);
 
-        // System.out.println("Result is: " + result);
-        // System.out.println("Content of file is: " + myObj.contentOfFile);
-        // System.out.println("Current index is: " + myObj.currentIndex);
-        // System.out.println("Character at current index is: " + myObj.contentOfFile.charAt(myObj.currentIndex));
+        // System.out.println("Result is: " + PCSObject.moreAvailable());
+        // System.out.println("Content of file is: " + PCSObject.contentOfFile);
+        // System.out.println("Current index is: " + PCSObject.currentIndex);
+        // System.out.println("Character at current index is: " + PCSObject.contentOfFile.charAt(PCSObject.currentIndex));
 
     }
 }
