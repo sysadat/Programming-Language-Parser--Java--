@@ -22,7 +22,7 @@ public class PCSClass implements PeekableCharacterStream {
         // System.out.println(fileAsString);
         
         contentOfFile = fileAsString;
-        currentIndex = 2;
+        currentIndex = 0;
 
         // System.out.println("Content of file is: " + contentOfFile);
 
@@ -34,19 +34,33 @@ public class PCSClass implements PeekableCharacterStream {
     public boolean moreAvailable() {
         int contentOfFileLength = contentOfFile.length();
         System.out.println("Length of string is: " + contentOfFileLength);
-        if (currentIndex == (contentOfFileLength - 1)) {
+
+        if (currentIndex >= (contentOfFileLength)) {
             return false;
         } else {
             return true;
         }
     }
 
-/*   // Returns the next character that would be returned without consuming
+    // Returns the next character that would be returned without consuming
     // the character. If no more characters are available -1 is returned.
     public int peekNextChar() {
-        
+        boolean isAvaliable = moreAvailable();
+        System.out.println("In peekNextChar, result is: " + isAvaliable);
+        char currentCharacter;
+        int characterAsInt = 0;
+        if (isAvaliable) {
+            currentCharacter = contentOfFile.charAt(currentIndex);
+            System.out.println("Current character is: " + currentCharacter);
+            System.out.println("characterAsInt before is: " + characterAsInt);
+            characterAsInt = currentCharacter;
+            System.out.println("characterAsInt is: " + characterAsInt);
+            return characterAsInt;
+        } else {
+            return -1;
+        }
     }
-
+/* 
     // Returns the character ahead in the stream without consuming the
     // the character. peekAheadChar(0) returns the same character as
     // peekNextChar(). If no more characters are available at that position
@@ -57,7 +71,7 @@ public class PCSClass implements PeekableCharacterStream {
 
     // Returns the next character and consumes it. If no more characters are
     // available -1 is returned.
-    public public int getNextChar() {
+    public int getNextChar() {
         
     }
 
@@ -80,6 +94,9 @@ public class PCSClass implements PeekableCharacterStream {
 
         PCSClass myObj = new PCSClass(inputtedFileName);
         boolean result = myObj.moreAvailable();
+        int peekResult = myObj.peekNextChar();
+
+        System.out.println("Peek result is: " + peekResult);
 
         // System.out.println("Result is: " + result);
         // System.out.println("Content of file is: " + myObj.contentOfFile);
