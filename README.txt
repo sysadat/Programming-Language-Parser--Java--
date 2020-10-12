@@ -15,3 +15,6 @@ Sayed Yoseph Sadat
 
 - https://www.javatpoint.com/java-char-to-int
 - Used this website to learn how to turn a character into an integer.
+
+- https://stackoverflow.com/questions/15161553/how-to-convert-fileinputstream-into-string-in-java
+- Used this stackoverflow post to see how to convert the file input stream into a string. Used code and updated it from the most upvoted answer. 

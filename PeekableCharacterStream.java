@@ -12,5 +12,5 @@ public interface PeekableCharacterStream{
     public int peekNextChar();
     public int peekAheadChar(int ahead);
     public int getNextChar();
-    // public void close();
+    public void close();
 }

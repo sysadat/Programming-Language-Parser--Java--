@@ -1,5 +1,7 @@
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -9,21 +11,37 @@ public class PCSClass implements PeekableCharacterStream {
     int currentIndex;
     int contentOfFileLength;
     String contentOfFile;
+    FileInputStream fis;
 
     // Constructor
-    public PCSClass(String inputtedFileName) throws FileNotFoundException, IOException {
+    public PCSClass(String inputtedFileName) throws IOException {
         // Get the name of the textfile from the command line, and then write the file's contents into a string
-        Path fileName = Path.of(inputtedFileName);
+        // OLD
+        // Path fileName = Path.of(inputtedFileName);
 
         // System.out.println("The path is: " + fileName);
 
-        String fileAsString = Files.readString(fileName);
-
+        // OLD
+        // String fileAsString = Files.readString(fileName);
 
         // System.out.println("Printing now ...");
         // System.out.println(fileAsString);
+
+        System.out.println("The file name is is: " + inputtedFileName);
+        fis = new FileInputStream(inputtedFileName);
+
+        StringBuilder fileAsString = new StringBuilder();
+        int currentCharacter;
+        while ((currentCharacter = fis.read()) != -1) {
+            fileAsString.append((char)currentCharacter);
+        }
+        System.out.println("What we have is: " + fileAsString.toString());
         
-        contentOfFile = fileAsString;
+        // contentOfFile = fileAsString;
+        // contentOfFileLength = contentOfFile.length();
+        // currentIndex = 0;
+
+        contentOfFile = fileAsString.toString();
         contentOfFileLength = contentOfFile.length();
         currentIndex = 0;
 
@@ -82,7 +100,6 @@ public class PCSClass implements PeekableCharacterStream {
         }
     }
 
-
     // Returns the next character and consumes it. If no more characters are
     // available -1 is returned.
     public int getNextChar() {
@@ -102,13 +119,20 @@ public class PCSClass implements PeekableCharacterStream {
             return -1;
         }
     }
-/* 
      // Closes the stream.
      public void close() {
-        
-    } */
+        try {
+            fis.close(); 
+            System.out.println("Closed");
+        }
+        catch (IOException e) {
+            // Do something here
+            System.out.println("Error in closing the stream");
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
         
         // If the user did not specify a file or put more than one file
         if (args.length != 1) {
@@ -121,6 +145,7 @@ public class PCSClass implements PeekableCharacterStream {
         // System.out.println("Inputted file name is: " + inputtedFileName);
 
         PCSClass PCSObject = new PCSClass(inputtedFileName);
+        PCSObject.close();
         // System.out.println("Current index is now : " + PCSObject.currentIndex);
 
         // System.out.println("Peek result is: " + PCSObject.peekNextChar());
