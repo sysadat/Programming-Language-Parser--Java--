@@ -116,6 +116,7 @@ public class StreamClass implements PeekableCharacterStream {
         System.out.println("peekAheadChar is: " + StreamObject.peekAheadChar(2));
         System.out.println("getNextChar response is: " + StreamObject.getNextChar());
         System.out.println("Current index is: " + StreamObject.currentIndex);
+        System.out.println("Contents of file are: " + StreamObject.contentOfFile);
 
         StreamObject.close();
     }
