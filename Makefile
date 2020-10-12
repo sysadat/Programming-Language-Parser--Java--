@@ -7,7 +7,7 @@ JC = javac
 CLASSES = \
 		Token.java \
 		PeekableCharacterStream.java \
-		PCSClass.java
+		StreamClass.java
 
 default: classes
 

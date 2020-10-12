@@ -2,7 +2,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 // Create the class that will implement the interface
-public class PCSClass implements PeekableCharacterStream {
+public class StreamClass implements PeekableCharacterStream {
     // Class attributes
     int currentIndex;
     int contentOfFileLength;
@@ -10,7 +10,7 @@ public class PCSClass implements PeekableCharacterStream {
     FileInputStream fis;
 
     // Constructor
-    public PCSClass(String inputtedFileName) throws IOException {
+    public StreamClass(String inputtedFileName) throws IOException {
         // Get the name of the textfile from the command line, and then write the file's contents into a string
         fis = new FileInputStream(inputtedFileName);
         StringBuilder fileAsString = new StringBuilder();
@@ -98,6 +98,8 @@ public class PCSClass implements PeekableCharacterStream {
     }
 
     public static void main(String[] args) throws IOException {
+        // TODO: Put all this code in the scanner class, leaving this here for now just to test the stream class some more 
+
         // If the user did not specify a file or put more than one file
         if (args.length != 1) {
             System.out.println("Please enter the name of the file that you wish to use.");
@@ -106,6 +108,15 @@ public class PCSClass implements PeekableCharacterStream {
 
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
-        PCSClass PCSObject = new PCSClass(inputtedFileName);
+        StreamClass StreamObject = new StreamClass(inputtedFileName);
+
+        // Testing
+        System.out.println("More avaliable response is: " + StreamObject.moreAvailable());
+        System.out.println("peekNextChar is: " + StreamObject.peekNextChar());
+        System.out.println("peekAheadChar is: " + StreamObject.peekAheadChar(2));
+        System.out.println("getNextChar response is: " + StreamObject.getNextChar());
+        System.out.println("Current index is: " + StreamObject.currentIndex);
+
+        StreamObject.close();
     }
 }
