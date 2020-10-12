@@ -30,11 +30,11 @@ public class StreamClass implements PeekableCharacterStream {
 
     // Returns true if more characters are available, false otherwise
     public boolean moreAvailable() {
+        boolean isAvaliable = true;
         if (currentIndex >= contentOfFileLength) {
-            return false;
-        } else {
-            return true;
+            isAvaliable = false;
         }
+        return isAvaliable;
     }
 
     // Returns the next character that would be returned without consuming
