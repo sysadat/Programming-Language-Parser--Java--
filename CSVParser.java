@@ -16,6 +16,7 @@ public class CSVParser {
         listOfMaps = new ArrayList<Map<String,String>>();
         mapOfColumnNames = new HashMap<Integer, String>();
         headerColumns = getColumns();
+        getColumnNames();
     }
 
     // Methods for class
@@ -28,7 +29,7 @@ public class CSVParser {
             if ((char)streamObject.peekNextChar() == ',') {
                 streamObject.getNextChar();
                 numCols++;
-            // If we reach a new line that means that we are done with the header row
+            // If we reach a new line that means that we found the final column and we are done with the header row
             } else if ((char)streamObject.peekNextChar() == '\n' ) {
                 streamObject.getNextChar();
                 numCols++;
@@ -36,6 +37,26 @@ public class CSVParser {
             }
         }
         return numCols;
+    }
+
+    // Get the column names from the header row
+    public void getColumnNames() {
+        int currentColumn = 0;
+        int oldStreamCurrentIndex = streamObject.currentIndex;
+        StringBuilder columnNames = new StringBuilder();
+        streamObject.currentIndex = 0;
+
+        char currChar;
+        while (streamObject.peekNextChar()!= -1) {
+            currChar = (char)streamObject.peekNextChar();
+            if (currChar == ',') {
+                break;
+            }
+            columnNames.append(currChar);
+            streamObject.getNextChar();
+        }
+        System.out.println("THE STRING WE HAVE IS: " + columnNames);
+        streamObject.currentIndex = oldStreamCurrentIndex;
     }
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
