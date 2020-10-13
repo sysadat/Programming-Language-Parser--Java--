@@ -6,10 +6,11 @@ public class CSVParser {
     // Class attributes
     // https://stackoverflow.com/questions/1493162/how-does-one-instantiate-an-array-of-maps-in-java
     List<Map<String,String>> listOfMaps = new ArrayList<Map<String,String>>();
+    StreamClass streamObject;
 
     // Constructor that takes in a stream.
     public CSVParser(StreamClass stream) {
-        System.out.println("Created!");
+        streamObject = stream;
     }
 
     // Methods for class
@@ -24,9 +25,21 @@ public class CSVParser {
     //     return;
     // }
 
-    // Print out the list that stores the maps
-    // public void printMaps() {
-    // }
+    public Map<String,String> getMaps() {
+        Map<String, String> ourHashMap = new HashMap<String, String>();
+        Map<String, String> ourSecondHashMap = new HashMap<String, String>();
+
+        ourHashMap.put("First", "LOL"); 
+        ourHashMap.put("Second", "TEST"); 
+        ourHashMap.put("Third", "TESTINGGGG");
+
+        ourSecondHashMap.put("First", "OOOO"); 
+        ourSecondHashMap.put("Second", "BAG"); 
+        ourSecondHashMap.put("Third", "HEHE");
+
+        return ourHashMap;
+    }
+
 
     public static void main(String[] args) throws IOException {
         // If the user did not specify a file or put more than one file
@@ -40,5 +53,31 @@ public class CSVParser {
 
         StreamClass stream = new StreamClass(inputtedFileName);
         CSVParser parserObject = new CSVParser(stream);
+
+
+        // Map<String, String> printMap = new HashMap<String, String>();
+        // printMap = parserObject.getMaps();
+        // System.out.println(printMap);
+
+
+        Map<String, String> ourHashMap = new HashMap<String, String>();
+        Map<String, String> ourSecondHashMap = new HashMap<String, String>();
+
+        ourHashMap.put("First", "LOL"); 
+        ourHashMap.put("Second", "TEST"); 
+        ourHashMap.put("Third", "TESTINGGGG");
+
+        ourSecondHashMap.put("First", "OOOO"); 
+        ourSecondHashMap.put("Second", "BAG"); 
+        ourSecondHashMap.put("Third", "HEHE");
+
+        List<Map<String,String>> listOfMaps = new ArrayList<Map<String,String>>();
+        listOfMaps.add(ourHashMap);
+        listOfMaps.add(ourSecondHashMap);
+
+        for (int i = 0; i < listOfMaps.size(); i++) {
+            System.out.println(listOfMaps.get(i)); 
+        }
+
     }
 }
