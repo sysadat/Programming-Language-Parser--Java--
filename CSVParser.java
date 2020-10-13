@@ -89,11 +89,7 @@ public class CSVParser {
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
-        // TODO
-        System.out.println("WE HERE");
-
         int res = getColumns();
-        System.out.println("Res is: " + res);
         if (res > headerColumns || res == -1) {
             System.out.println("Error, there are more columns in the data row than the header row. Please fix this then try again.");
             System.exit(-1);
@@ -101,9 +97,19 @@ public class CSVParser {
         Map<String, String> returnRow = new HashMap<String, String>();
         StringBuilder itemName = new StringBuilder();
         int currentColumn = 0;
+        int aheadIndex = 0;
         char currChar;
-        while (streamObject.peekNextChar()!= -1) {
-            currChar = (char)streamObject.peekNextChar();
+
+        // TODD: DELETE
+        // System.out.println("Current index is: " + streamObject.currentIndex);
+        // If row we are on does not exist
+        if (streamObject.peekAheadChar(aheadIndex) == -1) {
+            // System.out.println("The row you want to read does not exist");
+            return null; 
+        }
+        // System.out.println("Current index in peek is: " + streamObject.currentIndex);
+        while (streamObject.peekAheadChar(aheadIndex)!= -1) {
+            currChar = (char)streamObject.peekAheadChar(aheadIndex);
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
@@ -112,33 +118,83 @@ public class CSVParser {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
-                streamObject.getNextChar();
+                aheadIndex++;
                 break;
             }
             if (currChar != ',') {
                 itemName.append(currChar);
             }
-            streamObject.getNextChar();
+            aheadIndex++;
         }
 
         // If the row we are peaking is the last row of the CSV
-        if (streamObject.peekNextChar()== -1) {
+        if (streamObject.peekAheadChar(aheadIndex) == -1) {
             returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
             itemName.setLength(0);
             currentColumn++;
         }
-        listOfMaps.add(returnRow);
-        printListOfMaps();
+
+        // We don't want to add this to the list of maps because we are just peeking, not getting
+        // listOfMaps.add(returnRow);
         return returnRow;
     }
 
     // Returns the next row and consumes it. If no more rows are available null is returned.
-    // public Map<String,String> getNextRow() {
-    //     return;
-    // }
+    public Map<String,String> getNextRow() {
+        Map<String, String> returnRow = new HashMap<String, String>();
+        StringBuilder itemName = new StringBuilder();
+        int currentColumn = 0;
+        char currChar;
+
+        // TODD: DELETE
+        // System.out.println("Current index in get is: " + streamObject.currentIndex);
+        // If row we are on does not exist
+        if (streamObject.peekNextChar() == -1) {
+            // System.out.println("The row you want to read does not exist");
+            return null; 
+        }
+        while (streamObject.peekNextChar()!= -1) {
+            currChar = (char)streamObject.getNextChar();
+            if (currChar == ',') {
+                returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+                itemName.setLength(0);
+                currentColumn++;
+            } else if (currChar == '\n') {
+                returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+                itemName.setLength(0);
+                currentColumn++;
+                // streamObject.getNextChar();
+                break;
+            }
+            if (currChar != ',') {
+                itemName.append(currChar);
+            }
+            // streamObject.getNextChar();
+        }
+
+        // If the row we are peaking is the last row of the CSV
+        if (streamObject.peekNextChar() == -1) {
+            returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+            itemName.setLength(0);
+            currentColumn++;
+        }
+        // listOfMaps.add(returnRow);
+        return returnRow;
+    }
+
+    // Read the entire contents of the CSV file, put the items into a list and then call a method to print it out
+    public void readCSVFile () {
+        Map<String, String> returnRow = new HashMap<String, String>();
+        while (peekNextRow() != null) {
+            returnRow = getNextRow();
+            listOfMaps.add(returnRow);
+        }
+        printListOfMaps();
+    }
 
     // Print each map in the list on its own line
     public void printListOfMaps () {
+        System.out.println("Size is: " + listOfMaps.size());
         for (int i = 0; i < listOfMaps.size(); i++) {
             System.out.println(listOfMaps.get(i)); 
         }
@@ -156,9 +212,11 @@ public class CSVParser {
 
         StreamClass stream = new StreamClass(inputtedFileName);
         CSVParser parserObject = new CSVParser(stream);
-        parserObject.testing();
-        parserObject.peekNextRow();
-        parserObject.peekNextRow();
+        // System.out.println("Peek is: " + parserObject.peekNextRow());
+        // System.out.println("Get is: " + parserObject.getNextRow());
 
+        // System.out.println("Peek is: " + parserObject.peekNextRow());
+        // System.out.println("Get is: " + parserObject.getNextRow());
+        parserObject.readCSVFile();
     }
 }
