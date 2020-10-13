@@ -28,6 +28,10 @@ StreamClass.Java
 -----------------------------------------------------------------------------------------------------------
 CSVParser.Java 
 
+- https://www.geeksforgeeks.org/map-interface-java-examples/
+    - Used this website to learn how to use maps in Java.
+
+
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 
