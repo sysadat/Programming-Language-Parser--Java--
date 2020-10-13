@@ -49,7 +49,6 @@ public class CSVParser {
         char currChar;
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.peekNextChar();
-            // System.out.println("THE CURRENT CHAR IS : " + currChar);
             // https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
             if (currChar == ',') {
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
