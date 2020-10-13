@@ -50,12 +50,19 @@ public class CSVParser {
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.peekNextChar();
             if (currChar == ',') {
+                mapOfColumnNames.put(currentColumn, columnNames.toString());
+                columnNames.setLength(0);
+                currentColumn++;
+            } else if (currChar == '\n') {
+                mapOfColumnNames.put(currentColumn, columnNames.toString());
+                columnNames.setLength(0);
+                currentColumn++;
                 break;
             }
             columnNames.append(currChar);
             streamObject.getNextChar();
         }
-        System.out.println("THE STRING WE HAVE IS: " + columnNames);
+        System.out.println("THE MAP OF COLUMN NAMES IS : " + mapOfColumnNames);
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
 
