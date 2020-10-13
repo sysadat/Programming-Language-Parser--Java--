@@ -49,6 +49,7 @@ public class CSVParser {
         char currChar;
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.peekNextChar();
+            // System.out.println("THE CURRENT CHAR IS : " + currChar);
             if (currChar == ',') {
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
                 columnNames.setLength(0);
@@ -59,9 +60,13 @@ public class CSVParser {
                 currentColumn++;
                 break;
             }
-            columnNames.append(currChar);
+
+            if (currChar != ',') {
+                columnNames.append(currChar);
+            }
             streamObject.getNextChar();
         }
+
         System.out.println("THE MAP OF COLUMN NAMES IS : " + mapOfColumnNames);
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
