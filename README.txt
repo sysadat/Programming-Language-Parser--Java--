@@ -37,6 +37,9 @@ CSVParser.Java
 - https://stackoverflow.com/questions/1493162/how-does-one-instantiate-an-array-of-maps-in-java
     - Used this stackoverflow post to see how to add maps to lists in Java.
 
+- https://www.geeksforgeeks.org/list-interface-java-examples/
+    - Used this website to learn how to print a each element in a list on its own line. 
+
 
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
