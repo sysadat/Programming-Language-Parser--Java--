@@ -15,16 +15,18 @@ public class CSVParser {
         streamObject = stream;
         listOfMaps = new ArrayList<Map<String,String>>();
         mapOfColumnNames = new HashMap<Integer, String>();
-        headerColumns = getColumns();
+        headerColumns = getHeaderColumns();
         getColumnNames();
     }
 
     // Methods for class
 
     // Check how many columns there are in a row
-    public int getColumns() {
+    public int getHeaderColumns() {
         int numCols = 0;
         while (streamObject.getNextChar()!= -1) {
+            // System.out.println("Current index here is: " + streamObject.currentIndex);
+
             // The amount of commas will tell us how many columns there are 
             if ((char)streamObject.peekNextChar() == ',') {
                 streamObject.getNextChar();
@@ -36,7 +38,30 @@ public class CSVParser {
                 break;
             }
         }
+        // System.out.println("numCols is: " + numCols);
         return numCols;
+    }
+
+    // TODO
+    public int getColumns() {
+        int numColumnsSeen = 0;
+        int aheadIndex = 0;
+        while ((char)streamObject.peekAheadChar(aheadIndex)!= '\n' && streamObject.peekAheadChar(aheadIndex)!= -1) {
+            // System.out.println("Looking at: " + (char)streamObject.peekAheadChar(aheadIndex));
+            // System.out.println("Int version is  at: " + streamObject.peekAheadChar(aheadIndex));
+            // System.out.println("aheadIndex is: " + aheadIndex);
+            // The amount of commas will tell us how many columns there are 
+            if ((char)streamObject.peekAheadChar(aheadIndex) == ',') {
+                numColumnsSeen++;
+                // System.out.println("numColumnsSeen is: " + numColumnsSeen);
+            }
+            aheadIndex++;
+        }
+        if ((char)streamObject.peekAheadChar(aheadIndex) == '\n' || streamObject.peekAheadChar(aheadIndex) == -1 ){
+            numColumnsSeen++;
+        }
+        System.out.println("commasSeen is before return is: " + numColumnsSeen);
+        return numColumnsSeen;
     }
 
     // Get the column names from the header row
@@ -76,6 +101,15 @@ public class CSVParser {
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
+        // TODO
+        System.out.println("WE HERE");
+
+        int res = getColumns();
+        System.out.println("Res is: " + res);
+        if (res > headerColumns || res == -1) {
+            System.out.println("Error, there are more columns in the data row than the header row. Please fix this then try again.");
+            System.exit(-1);
+        }
         Map<String, String> returnRow = new HashMap<String, String>();
         StringBuilder itemName = new StringBuilder();
         int currentColumn = 0;
@@ -86,31 +120,44 @@ public class CSVParser {
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
-                listOfMaps.add(returnRow);
+                // listOfMaps.add(returnRow);
+                System.out.println("ADDED HERE");
                 currentColumn++;
             } else if (currChar == '\n') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
-                listOfMaps.add(returnRow);
+                streamObject.getNextChar();
+                // listOfMaps.add(returnRow);
+                System.out.println("ADDED LOL");
                 break;
             }
-
             if (currChar != ',') {
                 itemName.append(currChar);
             }
             streamObject.getNextChar();
-            System.out.println("Built string is: " + itemName);
+            // System.out.println("Built string is: " + itemName);
 
 
             // System.out.println("Current column is: " + currentColumn);
+            // System.out.println("returnRow inside is: " + returnRow);
 
         }
-        returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+
+        // If the row we are peaking is the last row of the CSV
+        if (streamObject.peekNextChar()== -1) {
+            returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+            itemName.setLength(0);
+            currentColumn++;
+            // listOfMaps.add(returnRow);
+            System.out.println("ADDED O_____O");
+        }
+        // returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
         // System.out.println("Built string is: " + itemName);
 
         // listOfMaps.add(returnRow);
         System.out.println("returnRow is: " + returnRow);
+        listOfMaps.add(returnRow);
         printListOfMaps();
         return returnRow;
     }
@@ -142,6 +189,7 @@ public class CSVParser {
         StreamClass stream = new StreamClass(inputtedFileName);
         CSVParser parserObject = new CSVParser(stream);
         parserObject.testing();
+        parserObject.peekNextRow();
         parserObject.peekNextRow();
 
     }
