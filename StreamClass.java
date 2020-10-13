@@ -25,6 +25,8 @@ public class StreamClass implements PeekableCharacterStream {
         contentOfFile = fileAsString.toString();
         contentOfFileLength = contentOfFile.length();
         currentIndex = 0;
+
+        close();
     }
 
     // Methods of the interface
@@ -118,7 +120,5 @@ public class StreamClass implements PeekableCharacterStream {
         System.out.println("getNextChar response is: " + StreamObject.getNextChar());
         System.out.println("Current index is: " + StreamObject.currentIndex);
         System.out.println("Contents of file are: " + StreamObject.contentOfFile);
-
-        StreamObject.close();
     }
 }

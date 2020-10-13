@@ -50,6 +50,7 @@ public class CSVParser {
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.peekNextChar();
             // System.out.println("THE CURRENT CHAR IS : " + currChar);
+            // https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
             if (currChar == ',') {
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
                 columnNames.setLength(0);
@@ -66,8 +67,6 @@ public class CSVParser {
             }
             streamObject.getNextChar();
         }
-
-        System.out.println("THE MAP OF COLUMN NAMES IS : " + mapOfColumnNames);
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
 
@@ -81,26 +80,12 @@ public class CSVParser {
     //     return;
     // }
 
-    public Map<String,String> getMaps() {
-        Map<String, String> ourHashMap = new HashMap<String, String>();
-        Map<String, String> ourSecondHashMap = new HashMap<String, String>();
-
-        ourHashMap.put("First", "LOL"); 
-        ourHashMap.put("Second", "TEST"); 
-
-        ourSecondHashMap.put("First", "OOOO"); 
-        ourSecondHashMap.put("Second", "BAG"); 
-
-        return ourHashMap;
-    }
-
     // Print each map in the list on its own line
     public void printListOfMaps () {
         for (int i = 0; i < listOfMaps.size(); i++) {
             System.out.println(listOfMaps.get(i)); 
         }
     }
-
 
     public static void main(String[] args) throws IOException {
         // If the user did not specify a file or put more than one file
@@ -114,6 +99,5 @@ public class CSVParser {
 
         StreamClass stream = new StreamClass(inputtedFileName);
         CSVParser parserObject = new CSVParser(stream);
-        stream.close();
     }
 }
