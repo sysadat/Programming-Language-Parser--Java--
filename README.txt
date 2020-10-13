@@ -31,6 +31,12 @@ CSVParser.Java
 - https://www.geeksforgeeks.org/map-interface-java-examples/
     - Used this website to learn how to use maps in Java.
 
+- https://www.geeksforgeeks.org/list-interface-java-examples/
+    - Used this website to learn how to use lists in Java.
+
+- https://stackoverflow.com/questions/1493162/how-does-one-instantiate-an-array-of-maps-in-java
+    - Used this stackoverflow post to see how to add maps to lists in Java.
+
 
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
