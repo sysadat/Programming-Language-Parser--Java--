@@ -43,6 +43,12 @@ CSVParser.Java
 - https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
     - Used this stackoverflow post to learn how to clear my string builder.
 
+- https://www.javatpoint.com/java-int-to-string
+    - Used this to learn how to turn an int to a string in Java.
+
+- https://beginnersbook.com/2014/08/hashmap-get-value-from-key-example/
+    - Used this website to learn how to get a value from a key in Java.
+
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 

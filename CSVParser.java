@@ -6,9 +6,9 @@ public class CSVParser {
     // Class attributes
     // https://stackoverflow.com/questions/1493162/how-does-one-instantiate-an-array-of-maps-in-java
     List<Map<String,String>> listOfMaps;
+    Map<Integer, String> mapOfColumnNames;
     StreamClass streamObject;
     int headerColumns;
-    Map<Integer, String> mapOfColumnNames;
 
     // Constructor that takes in a stream.
     public CSVParser(StreamClass stream) {
@@ -69,10 +69,51 @@ public class CSVParser {
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
 
+    public void testing() {
+        // System.out.println("Current index is: " + streamObject.currentIndex);
+        // System.out.println("contentOfFileLength is: " + streamObject.contentOfFileLength);
+    }
+
     // Returns the next row without consuming it. If no more rows are available null is returned.
-    // public Map<String,String> peekNextRow() {
-    //     return;
-    // }
+    public Map<String,String> peekNextRow() {
+        Map<String, String> returnRow = new HashMap<String, String>();
+        StringBuilder itemName = new StringBuilder();
+        int currentColumn = 0;
+        char currChar;
+        while (streamObject.peekNextChar()!= -1) {
+            currChar = (char)streamObject.peekNextChar();
+            // System.out.println("currChar is: " + currChar);
+            if (currChar == ',') {
+                returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+                itemName.setLength(0);
+                listOfMaps.add(returnRow);
+                currentColumn++;
+            } else if (currChar == '\n') {
+                returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+                itemName.setLength(0);
+                currentColumn++;
+                listOfMaps.add(returnRow);
+                break;
+            }
+
+            if (currChar != ',') {
+                itemName.append(currChar);
+            }
+            streamObject.getNextChar();
+            System.out.println("Built string is: " + itemName);
+
+
+            // System.out.println("Current column is: " + currentColumn);
+
+        }
+        returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+        // System.out.println("Built string is: " + itemName);
+
+        // listOfMaps.add(returnRow);
+        System.out.println("returnRow is: " + returnRow);
+        printListOfMaps();
+        return returnRow;
+    }
 
     // Returns the next row and consumes it. If no more rows are available null is returned.
     // public Map<String,String> getNextRow() {
@@ -81,7 +122,9 @@ public class CSVParser {
 
     // Print each map in the list on its own line
     public void printListOfMaps () {
+        System.out.println("SIZE IS : " + listOfMaps.size()); 
         for (int i = 0; i < listOfMaps.size(); i++) {
+            System.out.println("Printing"); 
             System.out.println(listOfMaps.get(i)); 
         }
     }
@@ -98,5 +141,8 @@ public class CSVParser {
 
         StreamClass stream = new StreamClass(inputtedFileName);
         CSVParser parserObject = new CSVParser(stream);
+        parserObject.testing();
+        parserObject.peekNextRow();
+
     }
 }
