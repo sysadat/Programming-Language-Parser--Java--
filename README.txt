@@ -38,7 +38,7 @@ CSVParser.Java
     - Used this stackoverflow post to see how to add maps to lists in Java.
 
 - https://www.geeksforgeeks.org/list-interface-java-examples/
-    - Used this website to learn how to print a each element in a list on its own line. 
+    - Used this website to learn how to print each element in a list on its own line. 
 
 - https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
     - Used this stackoverflow post to learn how to clear my string builder.

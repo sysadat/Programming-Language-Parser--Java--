@@ -101,7 +101,6 @@ public class StreamClass implements PeekableCharacterStream {
     }
 
     public static void main(String[] args) throws IOException {
-        // TODO: Put all this code in the scanner class, leaving this here for now just to test the stream class some more 
 
         // If the user did not specify a file or put more than one file
         if (args.length != 1) {
