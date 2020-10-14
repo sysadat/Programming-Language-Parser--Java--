@@ -189,12 +189,11 @@ public class CSVParser {
             returnRow = getNextRow();
             listOfMaps.add(returnRow);
         }
-        printListOfMaps();
     }
 
     // Print each map in the list on its own line
     public void printListOfMaps () {
-        System.out.println("Size is: " + listOfMaps.size());
+        // System.out.println("Size is: " + listOfMaps.size());
         for (int i = 0; i < listOfMaps.size(); i++) {
             System.out.println(listOfMaps.get(i)); 
         }
@@ -218,5 +217,6 @@ public class CSVParser {
         // System.out.println("Peek is: " + parserObject.peekNextRow());
         // System.out.println("Get is: " + parserObject.getNextRow());
         parserObject.readCSVFile();
+        parserObject.printListOfMaps();
     }
 }
