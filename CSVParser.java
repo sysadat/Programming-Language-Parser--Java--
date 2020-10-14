@@ -110,6 +110,15 @@ public class CSVParser {
         // System.out.println("Current index in peek is: " + streamObject.currentIndex);
         while (streamObject.peekAheadChar(aheadIndex)!= -1) {
             currChar = (char)streamObject.peekAheadChar(aheadIndex);
+            // TODO
+            // if ((currChar == ',') && ((char)streamObject.peekAheadChar(aheadIndex + 1) == ',')) {
+            //     System.out.println("SKIPPED A COLUMN");
+            //     System.out.println("Current column is : " + currentColumn);
+            //     currentColumn++;
+            //     returnRow.put(mapOfColumnNames.get(currentColumn), "test");
+            //     System.out.println("Return row is: " + returnRow);
+            //     itemName.setLength(0);
+            // }
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
@@ -145,6 +154,7 @@ public class CSVParser {
         StringBuilder itemName = new StringBuilder();
         int currentColumn = 0;
         char currChar;
+        char nextChar;
 
         // TODD: DELETE
         // System.out.println("Current index in get is: " + streamObject.currentIndex);
@@ -155,10 +165,32 @@ public class CSVParser {
         }
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.getNextChar();
+            // TODO
+            nextChar = (char)streamObject.peekNextChar();
+            // PROBLEM IN HERE SOMEWHERE
+            // if ((currChar == ',') && (nextChar == ',')) {
+            //     System.out.println("SKIPPED A COLUMN");
+            //     System.out.println("Current column is : " + currentColumn);
+            //     currentColumn++;
+            //     returnRow.put(mapOfColumnNames.get(currentColumn), "swag");
+            //     System.out.println("Return row is: " + returnRow);
+            //     itemName.setLength(0);
+            // }
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
+                // PROBLEM IN HERE SOMEWHERE
+                if (nextChar == ',') {
+                    System.out.println("SKIPPED A COLUMN");
+                    System.out.println("Current column is : " + currentColumn);
+                    returnRow.put(mapOfColumnNames.get(currentColumn), null);
+                    // PROBLEM IN HERE SOMEWHERE
+                    currentColumn++;
+                    streamObject.getNextChar();
+                    System.out.println("Return row is: " + returnRow);
+                    itemName.setLength(0);
+                }
             } else if (currChar == '\n') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
@@ -179,6 +211,7 @@ public class CSVParser {
             currentColumn++;
         }
         // listOfMaps.add(returnRow);
+        System.out.println("Return row before is: " + returnRow);
         return returnRow;
     }
 
@@ -187,6 +220,7 @@ public class CSVParser {
         Map<String, String> returnRow = new HashMap<String, String>();
         while (peekNextRow() != null) {
             returnRow = getNextRow();
+            System.out.println("Return row in here is : " + returnRow); 
             listOfMaps.add(returnRow);
         }
     }
