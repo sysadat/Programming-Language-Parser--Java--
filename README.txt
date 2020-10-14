@@ -49,6 +49,9 @@ CSVParser.Java
 - https://beginnersbook.com/2014/08/hashmap-get-value-from-key-example/
     - Used this website to learn how to get a value from a key in Java.
 
+- https://stackoverflow.com/questions/15208544/when-should-an-illegalargumentexception-be-thrown
+    - Learned how to throw illegal argument exception in Java.
+
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 

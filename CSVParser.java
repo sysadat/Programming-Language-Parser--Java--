@@ -15,12 +15,28 @@ public class CSVParser {
         streamObject = stream;
         listOfMaps = new ArrayList<Map<String,String>>();
         mapOfColumnNames = new HashMap<Integer, String>();
+        hasNewLine();
         headerColumns = getHeaderColumns();
         getColumnNames();
     }
 
     // Methods for class
 
+    public void hasNewLine() {
+        char currentChar;
+        boolean newLineSeen = false;
+        int ahead = 0;
+        while (streamObject.peekAheadChar(ahead)!= -1) {
+            currentChar = (char)(streamObject.peekAheadChar(ahead));
+            if (currentChar == '\n') {
+                newLineSeen = true;
+            }
+            ahead++;
+        }
+        if (newLineSeen == false) {
+            throw new IllegalArgumentException("Each row must be terminated with a new line");
+        }
+    }
     // Check how many columns there are in a row
     public int getHeaderColumns() {
         int numCols = 0;
@@ -186,7 +202,7 @@ public class CSVParser {
     public void readCSVFile () {
         Map<String, String> returnRow = new HashMap<String, String>();
         while (peekNextRow() != null) {
-            returnRow = getNextRow();
+            returnRow = getNextRow();   
             listOfMaps.add(returnRow);
         }
     }
