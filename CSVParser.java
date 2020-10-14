@@ -156,8 +156,6 @@ public class CSVParser {
         char currChar;
         char nextChar;
 
-        // TODD: DELETE
-        // System.out.println("Current index in get is: " + streamObject.currentIndex);
         // If row we are on does not exist
         if (streamObject.peekNextChar() == -1) {
             // System.out.println("The row you want to read does not exist");
@@ -165,31 +163,26 @@ public class CSVParser {
         }
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.getNextChar();
-            // TODO
             nextChar = (char)streamObject.peekNextChar();
-            // PROBLEM IN HERE SOMEWHERE
-            // if ((currChar == ',') && (nextChar == ',')) {
-            //     System.out.println("SKIPPED A COLUMN");
-            //     System.out.println("Current column is : " + currentColumn);
-            //     currentColumn++;
-            //     returnRow.put(mapOfColumnNames.get(currentColumn), "swag");
-            //     System.out.println("Return row is: " + returnRow);
-            //     itemName.setLength(0);
-            // }
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
-                // PROBLEM IN HERE SOMEWHERE
                 if (nextChar == ',') {
-                    System.out.println("SKIPPED A COLUMN");
-                    System.out.println("Current column is : " + currentColumn);
                     returnRow.put(mapOfColumnNames.get(currentColumn), null);
-                    // PROBLEM IN HERE SOMEWHERE
                     currentColumn++;
                     streamObject.getNextChar();
-                    System.out.println("Return row is: " + returnRow);
                     itemName.setLength(0);
+                     // TODO: HERE  
+                } else if (nextChar == '\n') {
+                    System.out.println("WE HERE!");
+                    System.out.println("currentColumn: " + currentColumn);
+                    returnRow.put(mapOfColumnNames.get(currentColumn), null);
+                    // System.out.println("returnRow is: " + returnRow);
+                    // currentColumn++;
+                    streamObject.getNextChar();
+                    itemName.setLength(0);
+                    return returnRow;
                 }
             } else if (currChar == '\n') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
@@ -197,7 +190,12 @@ public class CSVParser {
                 currentColumn++;
                 // streamObject.getNextChar();
                 break;
-            }
+            } 
+            // else if (streamObject.peekNextChar() == -1) {
+            //     returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
+            //     itemName.setLength(0);
+            //     currentColumn++;
+            // }
             if (currChar != ',') {
                 itemName.append(currChar);
             }
@@ -205,13 +203,14 @@ public class CSVParser {
         }
 
         // If the row we are peaking is the last row of the CSV
+        // BRING BACK LATER
         if (streamObject.peekNextChar() == -1) {
             returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
             itemName.setLength(0);
             currentColumn++;
         }
         // listOfMaps.add(returnRow);
-        System.out.println("Return row before is: " + returnRow);
+        // System.out.println("Return row before is: " + returnRow);
         return returnRow;
     }
 
@@ -220,7 +219,7 @@ public class CSVParser {
         Map<String, String> returnRow = new HashMap<String, String>();
         while (peekNextRow() != null) {
             returnRow = getNextRow();
-            System.out.println("Return row in here is : " + returnRow); 
+            // System.out.println("Return row in here is : " + returnRow); 
             listOfMaps.add(returnRow);
         }
     }
