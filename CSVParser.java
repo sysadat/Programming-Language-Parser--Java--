@@ -39,24 +39,6 @@ public class CSVParser {
         }
     }
 
-    public void hasCommas() {
-        char currentChar;
-        boolean commasSeen = false;
-        int ahead = 0;
-
-        while ((char)streamObject.peekAheadChar(ahead)!= '\n' && streamObject.peekAheadChar(ahead)!= -1) {
-            currentChar = (char)(streamObject.peekAheadChar(ahead));
-            if (currentChar == ',' && headerColumns >= 2) {
-                commasSeen = true;
-                break;
-            }
-            ahead++;
-        }
-        if (commasSeen == false && headerColumns >= 2 && ahead != 0)  {
-            throw new IllegalArgumentException("Each column must be terminated by a comma character.");
-        }
-    }
-
     // Check how many columns there are in a row
     public int getHeaderColumns() {
         hasHeaderRow();
@@ -125,7 +107,6 @@ public class CSVParser {
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
-        hasCommas();
         int res = getColumns();
         if (res > headerColumns || res == -1) {
             System.out.println("Error, there are more columns in the data row than the header row. Please fix this then try again.");
