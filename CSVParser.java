@@ -46,7 +46,6 @@ public class CSVParser {
 
         while ((char)streamObject.peekAheadChar(ahead)!= '\n' && streamObject.peekAheadChar(ahead)!= -1) {
             currentChar = (char)(streamObject.peekAheadChar(ahead));
-            System.out.println("currentChar is : " + currentChar);
             if (currentChar == ',' && headerColumns >= 2) {
                 commasSeen = true;
                 break;
