@@ -108,9 +108,8 @@ public class CSVParser {
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
         int res = getColumns();
-        if (res > headerColumns || res == -1) {
-            System.out.println("Error, there are more columns in the data row than the header row. Please fix this then try again.");
-            System.exit(-1);
+        if (res > headerColumns) {
+            throw new IllegalArgumentException("Error, there are more columns in the data row than the header row. Please fix this then try again.");
         }
         Map<String, String> returnRow = new HashMap<String, String>();
         StringBuilder itemName = new StringBuilder();
