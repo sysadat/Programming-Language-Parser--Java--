@@ -22,31 +22,21 @@ public class CSVParser {
 
     // Methods for class
 
-    public void hasNewLine(int headerRowCheck) {
+    public void hasHeaderRow() {
         char currentChar;
         boolean newLineSeen = false;
         int ahead = 0;
         while (streamObject.peekAheadChar(ahead)!= -1) {
             currentChar = (char)(streamObject.peekAheadChar(ahead));
-            // DELETE
-            // System.out.println("Curr char is: " + currentChar);
             if (currentChar == '\n') {
                 newLineSeen = true;
             }
             ahead++;
         }
-        // DELETE
-        // System.out.println("newLineSeen is: " + newLineSeen);
         // If we haven't seen a new line character when we are checking the header then throw an error
-        if (newLineSeen == false && headerRowCheck == 1) {
+        if (newLineSeen == false) {
             throw new IllegalArgumentException("CSV files must have a header row.");
-        // If we haven't seen a new line character and we are not on the last row of the CSV then throw an error
-        } else if (newLineSeen == false && streamObject.peekAheadChar(ahead) != -1) {
-        // } else if (newLineSeen == false) {
-            System.out.println("HERE!!!");
-            throw new IllegalArgumentException("Each row must be terminated with a new line.");
         }
-        System.out.println("DONE");
     }
 
     // public void hasCommas() {
@@ -72,7 +62,7 @@ public class CSVParser {
 
     // Check how many columns there are in a row
     public int getHeaderColumns() {
-        hasNewLine(1);
+        hasHeaderRow();
         int numCols = 0;
         while (streamObject.getNextChar()!= -1) {
 
@@ -138,7 +128,6 @@ public class CSVParser {
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
-        hasNewLine(0);
         int res = getColumns();
         if (res > headerColumns || res == -1) {
             System.out.println("Error, there are more columns in the data row than the header row. Please fix this then try again.");
