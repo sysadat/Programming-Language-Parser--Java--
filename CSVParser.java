@@ -15,14 +15,15 @@ public class CSVParser {
         streamObject = stream;
         listOfMaps = new ArrayList<Map<String,String>>();
         mapOfColumnNames = new HashMap<Integer, String>();
-        hasNewLine();
+        hasHeaderAndNewLine();
         headerColumns = getHeaderColumns();
+        hasCommas();
         getColumnNames();
     }
 
     // Methods for class
 
-    public void hasNewLine() {
+    public void hasHeaderAndNewLine() {
         char currentChar;
         boolean newLineSeen = false;
         int ahead = 0;
@@ -34,8 +35,29 @@ public class CSVParser {
             ahead++;
         }
         if (newLineSeen == false) {
-            throw new IllegalArgumentException("Each row must be terminated with a new line");
+            throw new IllegalArgumentException("CSV files must have a header row and each row must be terminated with a new line.");
         }
+    }
+
+    public void hasCommas() {
+        char currentChar;
+        boolean commasSeen = false;
+        int ahead = 0;
+
+        int oldStreamCurrentIndex = streamObject.currentIndex;
+        streamObject.currentIndex = 0;
+
+        while (streamObject.peekAheadChar(ahead)!= -1) {
+            currentChar = (char)(streamObject.peekAheadChar(ahead));
+            if (currentChar == ',' && headerColumns >= 2) {
+                commasSeen = true;
+            }
+            ahead++;
+        }
+        if (commasSeen == false) {
+            throw new IllegalArgumentException("Each column must be terminated by a comma character.");
+        }
+        streamObject.currentIndex = oldStreamCurrentIndex;
     }
     // Check how many columns there are in a row
     public int getHeaderColumns() {
