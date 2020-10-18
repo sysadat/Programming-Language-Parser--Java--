@@ -51,7 +51,7 @@ public class CSVParser {
                 break;
             }
             ahead++;
-        // If we have not seen a comma and have more than 2 columns then we throw an error
+        }
         if (commasSeen == false && headerColumns >= 2 && ahead != 0)  {
             throw new IllegalArgumentException("Each column must be terminated by a comma character.");
         }
@@ -125,7 +125,6 @@ public class CSVParser {
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
-        System.out.println("PEEKING");
         hasCommas();
         int res = getColumns();
         if (res > headerColumns || res == -1) {
@@ -251,8 +250,6 @@ public class CSVParser {
         CSVParser parserObject = new CSVParser(stream);
         parserObject.readCSVFile();
         parserObject.printListOfMaps();
-
-        System.out.println("Number of header columns are: " + parserObject.headerColumns);
 
     }
 }
