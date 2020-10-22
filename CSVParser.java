@@ -44,7 +44,7 @@ public class CSVParser {
     public void isHeaderRepeated(String columnName) {
         boolean isRepeatName = setOfColumnNames.contains(columnName);
         if (isRepeatName) {
-            throw new IllegalArgumentException("No column in the header may be repeated");
+            throw new IllegalArgumentException("No column in the header may be repeated.");
         }
     }
 
@@ -96,6 +96,9 @@ public class CSVParser {
             currChar = (char)streamObject.peekNextChar();
             // https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
             if (currChar == ',') {
+                if ((char)streamObject.peekAheadChar(1) == ',' || (char)streamObject.peekAheadChar(1) == '\n') {
+                    throw new IllegalArgumentException("No column in the header row may be empty.");
+                }
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
                 isHeaderRepeated(columnNames.toString());
                 setOfColumnNames.add(columnNames.toString());
