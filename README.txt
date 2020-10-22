@@ -53,7 +53,10 @@ CSVParser.Java
     - Learned how to throw illegal argument exception in Java.
 
 - https://www.geeksforgeeks.org/set-in-java/
-    - Used this webiste to learn how to use sets in Java and check for duplicates in them. 
+    - Used this webiste to learn how to use sets in Java and check for duplicates in them.
+
+- https://www.tutorialspoint.com/java/character_iswhitespace.htm
+    - Used this website to learn how to check for white spaces in Java. 
 
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 

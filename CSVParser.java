@@ -120,6 +120,19 @@ public class CSVParser {
         }
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
+    
+    public int getNewLineIndex () {
+        int newLineIndex = 0;
+        int aheadIndex = 0;
+        while ((char)streamObject.peekAheadChar(aheadIndex)!= '\n' && streamObject.peekAheadChar(aheadIndex)!= -1) {
+            if ((char)streamObject.peekAheadChar(aheadIndex) == '"' && (char)streamObject.peekAheadChar(aheadIndex + 1) == '\n') {
+                aheadIndex = aheadIndex + 2;
+            }
+            newLineIndex++;
+            aheadIndex++;
+        }
+        return newLineIndex;
+    }
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
@@ -132,14 +145,21 @@ public class CSVParser {
         int currentColumn = 0;
         int aheadIndex = 0;
         char currChar;
+        boolean doubleQuotesSeen = false;
+        int newLineIndex = 0;
 
         // If row we are on does not exist
         if (streamObject.peekAheadChar(aheadIndex) == -1) {
             return null; 
         }
+        newLineIndex = getNewLineIndex();
         while (streamObject.peekAheadChar(aheadIndex)!= -1) {
             currChar = (char)streamObject.peekAheadChar(aheadIndex);
-            if (currChar == ',') {
+            if (currChar == '"') {
+                doubleQuotesSeen = true;
+            } else if (Character.isWhitespace(currChar) && !doubleQuotesSeen && newLineIndex != aheadIndex) {
+                throw new IllegalArgumentException("Any whitespace character that is part of a column must be a double quoted column.");
+            } else if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
