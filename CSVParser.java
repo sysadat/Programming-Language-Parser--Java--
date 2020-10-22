@@ -7,6 +7,7 @@ public class CSVParser {
     // https://stackoverflow.com/questions/1493162/how-does-one-instantiate-an-array-of-maps-in-java
     List<Map<String,String>> listOfMaps;
     Map<Integer, String> mapOfColumnNames;
+    Set<String> setOfColumnNames;
     StreamClass streamObject;
     int headerColumns;
 
@@ -15,6 +16,7 @@ public class CSVParser {
         streamObject = stream;
         listOfMaps = new ArrayList<Map<String,String>>();
         mapOfColumnNames = new HashMap<Integer, String>();
+        setOfColumnNames = new HashSet<String>(); 
         headerColumns = getHeaderColumns();
         getColumnNames();
     }
@@ -36,6 +38,13 @@ public class CSVParser {
         // If we haven't seen a new line character when we are checking the header then throw an error
         if (newLineSeen == false) {
             throw new IllegalArgumentException("CSV files must have a header row.");
+        }
+    }
+
+    public void isHeaderRepeated(String columnName) {
+        boolean isRepeatName = setOfColumnNames.contains(columnName);
+        if (isRepeatName) {
+            throw new IllegalArgumentException("No column in the header may be repeated");
         }
     }
 
@@ -88,10 +97,14 @@ public class CSVParser {
             // https://stackoverflow.com/questions/5192512/how-can-i-clear-or-empty-a-stringbuilder
             if (currChar == ',') {
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
+                isHeaderRepeated(columnNames.toString());
+                setOfColumnNames.add(columnNames.toString());
                 columnNames.setLength(0);
                 currentColumn++;
             } else if (currChar == '\n') {
                 mapOfColumnNames.put(currentColumn, columnNames.toString());
+                isHeaderRepeated(columnNames.toString());
+                setOfColumnNames.add(columnNames.toString());
                 columnNames.setLength(0);
                 currentColumn++;
                 break;
@@ -219,8 +232,7 @@ public class CSVParser {
     public static void main(String[] args) throws IOException {
         // If the user did not specify a file or put more than one file
         if (args.length != 1) {
-            System.out.println("Please enter the name of the file that you wish to use.");
-            System.exit(-1);
+            throw new IllegalArgumentException("Please enter the name of the file that you wish to use.");
         }
 
         // Get the name of the file inputted from the user in the command line
