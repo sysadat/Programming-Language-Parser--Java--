@@ -52,6 +52,9 @@ CSVParser.Java
 - https://stackoverflow.com/questions/15208544/when-should-an-illegalargumentexception-be-thrown
     - Learned how to throw illegal argument exception in Java.
 
+- https://www.geeksforgeeks.org/set-in-java/
+    - Used this webiste to learn how to use sets in Java and check for duplicates in them. 
+
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 
