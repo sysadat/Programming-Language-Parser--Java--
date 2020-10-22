@@ -157,8 +157,10 @@ public class CSVParser {
             currChar = (char)streamObject.peekAheadChar(aheadIndex);
             if (currChar == '"') {
                 doubleQuotesSeen = true;
-            } else if (Character.isWhitespace(currChar) && !doubleQuotesSeen && newLineIndex != aheadIndex) {
+            } else if (Character.isWhitespace(currChar) && !doubleQuotesSeen) {
                 throw new IllegalArgumentException("Any whitespace character that is part of a column must be a double quoted column.");
+            } else if (currChar == '"' && doubleQuotesSeen) {
+                doubleQuotesSeen = false;
             } else if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
