@@ -190,19 +190,30 @@ public class CSVParser {
             currChar = (char)streamObject.getNextChar();
             nextChar = streamObject.peekNextChar();
             if (currChar == '"') {
+                System.out.println("SAW QUOTES");
                 if (doubleQuotesSeen) {
                     doubleQuoteString = itemName.toString();
                     doubleQuoteString = doubleQuoteString.substring(1);
                     returnRow.put(mapOfColumnNames.get(currentColumn), doubleQuoteString);
-                    char newLineCheck = (char)streamObject.getNextChar();
-                    // if (newLineCheck == '\n') {
-                    //     break;
-                    // }
+                    char nextCharCheck = (char)streamObject.getNextChar();
+                    System.out.println("nextCharCheck is: " + nextCharCheck);
+                    System.out.println("streamObject.peekNextChar() is: " + (char)streamObject.peekNextChar());
+                    if (nextCharCheck == '\n') {
+                        return returnRow;
+                    } else if (nextCharCheck == ',' && (char)streamObject.peekNextChar() == '\n') {
+                        System.out.println("SWAG");
+                        streamObject.getNextChar();
+                        break;
+                    } else if (nextCharCheck == ',') {
+                        System.out.println("doubleQuoteString: " + doubleQuoteString);
+                        streamObject.getNextChar();
+                    }
                     itemName.setLength(0);
                     currentColumn++;
                     doubleQuotesSeen = false;
                 } else {
                     doubleQuotesSeen = true;
+                    System.out.println("TRUE");
                 }
             } else if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());

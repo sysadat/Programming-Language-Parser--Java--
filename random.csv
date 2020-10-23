@@ -1,3 +1,3 @@
 ELEMENT_TYPE,BACKGROUND,FOREGROUND,STYLE,FONT
-DEFAULT,navy,yellow,"Courier New",
+DEFAULT,navy,"yellow","Courier New",
 KEYWORD,,white,b,
