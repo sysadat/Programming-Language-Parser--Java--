@@ -192,7 +192,7 @@ public class CSVParser {
         StringBuilder itemName = new StringBuilder();
         int currentColumn = 0;
         char currChar;
-        char nextChar;
+        int nextChar;
 
         // If row we are on does not exist
         if (streamObject.peekNextChar() == -1) {
@@ -200,17 +200,17 @@ public class CSVParser {
         }
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.getNextChar();
-            nextChar = (char)streamObject.peekNextChar();
+            nextChar = streamObject.peekNextChar();
             if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
-                if (nextChar == ',') {
+                if ((char)nextChar == ',') {
                     returnRow.put(mapOfColumnNames.get(currentColumn), null);
                     currentColumn++;
                     streamObject.getNextChar();
                     itemName.setLength(0);
-                } else if (nextChar == '\n') {
+                } else if ((char)nextChar == '\n' || nextChar == -1) {
                     returnRow.put(mapOfColumnNames.get(currentColumn), null);
                     streamObject.getNextChar();
                     itemName.setLength(0);
