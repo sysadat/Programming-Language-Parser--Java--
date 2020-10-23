@@ -193,7 +193,7 @@ public class CSVParser {
         int currentColumn = 0;
         char currChar;
         int nextChar;
-
+        boolean doubleCommasAndMissingColumn = false;
         // If row we are on does not exist
         if (streamObject.peekNextChar() == -1) {
             return null; 
@@ -205,6 +205,9 @@ public class CSVParser {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
+                if ((char)nextChar == ',' && (char)streamObject.peekAheadChar(1) == '\n') {
+                    doubleCommasAndMissingColumn = true;
+                }
                 if ((char)nextChar == ',') {
                     returnRow.put(mapOfColumnNames.get(currentColumn), null);
                     currentColumn++;
@@ -216,6 +219,11 @@ public class CSVParser {
                     itemName.setLength(0);
                     return returnRow;
                 }
+            } else if (currChar == '\n' && doubleCommasAndMissingColumn) {
+                returnRow.put(mapOfColumnNames.get(currentColumn), null);
+                itemName.setLength(0);
+                currentColumn++;
+                break;
             } else if (currChar == '\n') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
