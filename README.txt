@@ -56,7 +56,10 @@ CSVParser.Java
     - Used this webiste to learn how to use sets in Java and check for duplicates in them.
 
 - https://www.tutorialspoint.com/java/character_iswhitespace.htm
-    - Used this website to learn how to check for white spaces in Java. 
+    - Used this website to learn how to check for white spaces in Java.
+
+- https://www.javatpoint.com/java-string-substring#:~:text=The%20java%20string%20substring(),end%20index%20starts%20from%201.
+    - Used this website to learn how to get a substring in Java.
 
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
