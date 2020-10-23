@@ -120,6 +120,19 @@ public class CSVParser {
         }
         streamObject.currentIndex = oldStreamCurrentIndex;
     }
+    
+    public int getNewLineIndex () {
+        int newLineIndex = 0;
+        int aheadIndex = 0;
+        while ((char)streamObject.peekAheadChar(aheadIndex)!= '\n' && streamObject.peekAheadChar(aheadIndex)!= -1) {
+            if ((char)streamObject.peekAheadChar(aheadIndex) == '"' && (char)streamObject.peekAheadChar(aheadIndex + 1) == '\n') {
+                aheadIndex = aheadIndex + 2;
+            }
+            newLineIndex++;
+            aheadIndex++;
+        }
+        return newLineIndex;
+    }
 
     // Returns the next row without consuming it. If no more rows are available null is returned.
     public Map<String,String> peekNextRow() {
@@ -133,11 +146,13 @@ public class CSVParser {
         int aheadIndex = 0;
         char currChar;
         boolean doubleQuotesSeen = false;
+        int newLineIndex = 0;
 
         // If row we are on does not exist
         if (streamObject.peekAheadChar(aheadIndex) == -1) {
             return null; 
         }
+        newLineIndex = getNewLineIndex();
         while (streamObject.peekAheadChar(aheadIndex)!= -1) {
             currChar = (char)streamObject.peekAheadChar(aheadIndex);
             if (currChar == '"') {
@@ -179,9 +194,6 @@ public class CSVParser {
         char currChar;
         int nextChar;
         boolean doubleCommasAndMissingColumn = false;
-        boolean doubleQuotesSeen = false;
-        String doubleQuoteString;
-
         // If row we are on does not exist
         if (streamObject.peekNextChar() == -1) {
             return null; 
@@ -189,33 +201,7 @@ public class CSVParser {
         while (streamObject.peekNextChar()!= -1) {
             currChar = (char)streamObject.getNextChar();
             nextChar = streamObject.peekNextChar();
-            if (currChar == '"') {
-                System.out.println("SAW QUOTES");
-                if (doubleQuotesSeen) {
-                    doubleQuoteString = itemName.toString();
-                    doubleQuoteString = doubleQuoteString.substring(1);
-                    returnRow.put(mapOfColumnNames.get(currentColumn), doubleQuoteString);
-                    char nextCharCheck = (char)streamObject.getNextChar();
-                    System.out.println("nextCharCheck is: " + nextCharCheck);
-                    System.out.println("streamObject.peekNextChar() is: " + (char)streamObject.peekNextChar());
-                    if (nextCharCheck == '\n') {
-                        return returnRow;
-                    } else if (nextCharCheck == ',' && (char)streamObject.peekNextChar() == '\n') {
-                        System.out.println("SWAG");
-                        streamObject.getNextChar();
-                        break;
-                    } else if (nextCharCheck == ',') {
-                        System.out.println("doubleQuoteString: " + doubleQuoteString);
-                        streamObject.getNextChar();
-                    }
-                    itemName.setLength(0);
-                    currentColumn++;
-                    doubleQuotesSeen = false;
-                } else {
-                    doubleQuotesSeen = true;
-                    System.out.println("TRUE");
-                }
-            } else if (currChar == ',') {
+            if (currChar == ',') {
                 returnRow.put(mapOfColumnNames.get(currentColumn), itemName.toString());
                 itemName.setLength(0);
                 currentColumn++;
