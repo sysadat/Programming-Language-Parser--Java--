@@ -191,18 +191,13 @@ public class CSVParser {
             nextChar = streamObject.peekNextChar();
             if (currChar == '"') {
                 if (doubleQuotesSeen) {
-                    // TODO
-                    // PROBLEM IS CURR CHAR IS THEN NEW LINE
                     doubleQuoteString = itemName.toString();
                     doubleQuoteString = doubleQuoteString.substring(1);
                     returnRow.put(mapOfColumnNames.get(currentColumn), doubleQuoteString);
-                    System.out.println(returnRow);
-                    // System.out.println((char)streamObject.getNextChar());
                     char newLineCheck = (char)streamObject.getNextChar();
-                    if (newLineCheck == '\n') {
-                        break;
-                    }
-                    // streamObject.getNextChar();
+                    // if (newLineCheck == '\n') {
+                    //     break;
+                    // }
                     itemName.setLength(0);
                     currentColumn++;
                     doubleQuotesSeen = false;
