@@ -17,14 +17,6 @@ public class Scanner {
         currentCharIndex = 0;
     }
 
-    // Print out the token's line number, character position, token type and token text
-    public void printToken (Token tokenToPrint) {
-        System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber())+ ",\t"
-                            + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
-                            + tokenToPrint.getType().toString() + " " 
-                            + "\"" + tokenToPrint.getText() + "\""); 
-    }
-
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
         return null;
@@ -33,6 +25,14 @@ public class Scanner {
     // Returns the next token and consumes it. If no more tokens are available a None token is returned.
     public Token getNextToken() {
         return null;
+    }
+
+    // Print out the token's line number, character position, token type and token text
+    public void printToken (Token tokenToPrint) {
+        System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber())+ ",\t"
+                            + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
+                            + tokenToPrint.getType().toString() + " " 
+                            + "\"" + tokenToPrint.getText() + "\""); 
     }
 
     public static void main(String[] args) throws IOException {
