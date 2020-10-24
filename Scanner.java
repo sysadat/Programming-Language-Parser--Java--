@@ -2,8 +2,10 @@ import java.io.IOException;
 
 // Create the Scanner class
 public class Scanner {
+    // Class attributes
 
-    public Scanner() throws IOException {
+    // Constructor that takes in a stream and a list of keywords.
+    public Scanner(){
         System.out.println("Created!");
     }
 
@@ -16,6 +18,7 @@ public class Scanner {
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
 
+        StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner();
     }
 }
