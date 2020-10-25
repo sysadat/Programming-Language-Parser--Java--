@@ -64,6 +64,7 @@ CSVParser.Java
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 
+TODO: DELETE THIS AND PUT THE NEW LIST OF KEYWORDS IN 
 
 - https://www.w3schools.com/java/java_ref_keywords.asp
     - Used this website to see what lists of keywords were in Java.
@@ -73,6 +74,5 @@ Scanner.Java
 
 - https://stackoverflow.com/questions/3844595/how-can-i-make-java-print-quotes-like-hello#:~:text=print(%22%5C%22Hello%5C,r%22%20and%20%22%5Cn%22
     - Used this website to learn how to print out double quotes in Java. 
-
 
 -----------------------------------------------------------------------------------------------------------
