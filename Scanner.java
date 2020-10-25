@@ -22,6 +22,11 @@ public class Scanner {
     // Identifier := ( _ | Alpha ) { ( _ | Digit | Alpha ) }
     // Check if the string entered is an identifier. Returns true if it is an identifier, false otherwise. 
     public boolean isIdentifier (String currString) {
+        // Need at least one character to be a proper indentifier
+        if (currString.length() < 1) {
+            isIndentifierCheck =  false;
+        }
+
         boolean isIndentifierCheck;
         char firstIndex = currString.charAt(0);
         if (firstIndex != '_' || !isAlpha(firstIndex)) {
@@ -36,6 +41,15 @@ public class Scanner {
             isIndentifierCheck = true;
         }
         return isIndentifierCheck;
+    }
+
+    // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
+    public boolean isKeyword (string currString) { 
+        boolean isKeywordCheck = false;
+        if (listOfKeywords.contains(currString)) {
+            isKeywordCheck = true;
+        }
+        return isKeywordCheck;
     }
 
     // Operator := ( | , | ) | { | } | = | == | < | > | <= | >= | != | + | - | * | / | ;
