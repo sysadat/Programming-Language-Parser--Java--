@@ -17,13 +17,54 @@ public class Scanner {
         currentCharIndex = 0;
     }
 
+    // Digit := 0 – 9
     // Check if a character falls in the ASCII range for a digit. Returns true if it does, false otherwise
     public boolean isDigit(char currChar) {
         boolean isDigitCheck = false;
         if (currChar >= '0' && currChar <= '9') {
-            isDigitCheck  = true;
+            isDigitCheck = true;
         }
         return isDigitCheck;
+    }
+
+    // Alpha := A – Z | a – z
+    // Check if a character falls in the ASCII range for an alphabetical character. Returns true if it does, false otherwise
+    public boolean isAlpha(char currChar) {
+        boolean isAlphaCheck = false;
+        if (currChar >= 'A' && currChar <= 'Z' || currChar >= 'a' && currChar <= 'z') {
+            isAlphaCheck = true;
+        }
+        return isAlphaCheck;
+    }
+
+    // WhiteSpace := Space | Tab | CarriageReturn | NewLine
+    // Check if a character is a whitespace. Returns true if it does, false otherwise
+    public boolean isWhiteSpace(char currChar) {
+        boolean isWhiteSpaceCheck = false;
+        if (currChar == ' ' || currChar == '\t' || currChar == '\r' || currChar == '\n') {
+            isWhiteSpaceCheck = true;
+        }
+        return isWhiteSpaceCheck;
+    }
+
+    // CharacterLiteral := Space - ! | # - [ | ] - ~
+    // Check if a character is a character literal. Returns true if it does, false otherwise
+    public boolean isCharacterLiteral(char currChar) {
+        boolean isCharacterLiteralCheck = false;
+        if (currChar >= ' ' && currChar <= '!' || currChar >= '#' && currChar <= '[' || currChar >= ']' && currChar <= '~') {
+            isCharacterLiteralCheck = true;
+        }
+        return isCharacterLiteralCheck;
+    }
+
+    // EscapedCharacter := \b | \n | \r | \t | \\ | \' | \"
+    // Check if a character is an escaped character. Returns true if it does, false otherwise
+    public boolean isEscapedCharacter(char currChar) {
+        boolean isEscapedCharacterCheck = false;
+        if (currChar == '\b' || currChar == '\n' || currChar == '\r' || currChar == '\t' || currChar == '\\' || currChar == '\'' || currChar == '\"') {
+            isEscapedCharacterCheck = true;
+        }
+        return isEscapedCharacterCheck;
     }
 
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
@@ -61,7 +102,5 @@ public class Scanner {
         Token MyToken = new Token("a", Token.TokenType.IDENTIFIER, 1, 5);
         scannerObject.printToken(MyToken);
 
-        System.out.println("For 3, the result is : " + scannerObject.isDigit('3'));
-        System.out.println("For a, the result is : " + scannerObject.isDigit('a'));
     }
 }
