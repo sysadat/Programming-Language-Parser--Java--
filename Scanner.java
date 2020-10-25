@@ -24,7 +24,7 @@ public class Scanner {
     public boolean isIdentifier (String currString) {
         // Need at least one character to be a proper indentifier
         if (currString.length() < 1) {
-            isIndentifierCheck =  false;
+            return false;
         }
 
         boolean isIndentifierCheck;
@@ -44,7 +44,7 @@ public class Scanner {
     }
 
     // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
-    public boolean isKeyword (string currString) { 
+    public boolean isKeyword (String currString) { 
         boolean isKeywordCheck = false;
         if (listOfKeywords.contains(currString)) {
             isKeywordCheck = true;
