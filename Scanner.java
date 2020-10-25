@@ -19,6 +19,15 @@ public class Scanner {
         currentCharIndex = 0;
     }
 
+    // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
+    public boolean isKeyword (String currString) { 
+        boolean isKeywordCheck = false;
+        if (listOfKeywords.contains(currString)) {
+            isKeywordCheck = true;
+        }
+        return isKeywordCheck;
+    }
+
     // Identifier := ( _ | Alpha ) { ( _ | Digit | Alpha ) }
     // Check if the string entered is an identifier. Returns true if it is an identifier, false otherwise. 
     public boolean isIdentifier (String currString) {
@@ -32,7 +41,7 @@ public class Scanner {
         if (firstIndex != '_' || !isAlpha(firstIndex)) {
             isIndentifierCheck = false;
         } else {
-            for (int i = 0 ; i < currString.length(); i++) {
+            for (int i = 0; i < currString.length(); i++) {
                 char currChar = currString.charAt(i);
                 if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
                     isIndentifierCheck = false;
@@ -41,15 +50,6 @@ public class Scanner {
             isIndentifierCheck = true;
         }
         return isIndentifierCheck;
-    }
-
-    // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
-    public boolean isKeyword (String currString) { 
-        boolean isKeywordCheck = false;
-        if (listOfKeywords.contains(currString)) {
-            isKeywordCheck = true;
-        }
-        return isKeywordCheck;
     }
 
     // Operator := ( | , | ) | { | } | = | == | < | > | <= | >= | != | + | - | * | / | ;
@@ -64,6 +64,44 @@ public class Scanner {
             isOperatorCheck = setOfOperators.contains(currString);
         }
         return isOperatorCheck;
+    }
+
+    // TODO
+    public boolean isIntConstant() {
+        return true; 
+    }
+
+    // TODO
+    public boolean isFloatConstant() {
+        return true; 
+    }
+
+    // StringConstant := " { ( CharacterLiteral | EscapedCharacter ) } "
+    // Check if a string is a string constant. Returns true if it is, false otherwise. 
+    public boolean isStringConstant(String currString) {
+        int stringLength = currString.length();
+        // The smallest a string constant can be is an empty string (""). Therefore, if the size is smaller than that we can just return false
+        if (stringLength < 2) {
+            return false;
+        }
+        int lastIndexInt = stringLength - 1;
+        boolean isStringConstantCheck = false;
+        char firstIndex = currString.charAt(0);
+        char lastIndex = currString.charAt(lastIndexInt);
+
+        if (firstIndex != '\"' || lastIndex != '\"' ) {
+            isStringConstantCheck = false;
+        } else {
+            for (int i = 1; i < lastIndexInt; i++) {
+                char currChar = currString.charAt(i);
+                if (!isCharacterLiteral(currChar) || !isEscapedCharacter(currChar)) {
+                    isStringConstantCheck = false;
+                }
+            }
+            isStringConstantCheck = true;
+        }
+
+        return isStringConstantCheck;
     }
 
     // Digit := 0 – 9
@@ -148,8 +186,8 @@ public class Scanner {
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        Token MyToken = new Token("a", Token.TokenType.IDENTIFIER, 1, 5);
-        scannerObject.printToken(MyToken);
+        // Token MyToken = new Token("a", Token.TokenType.IDENTIFIER, 1, 5);
+        // scannerObject.printToken(MyToken);
 
     }
 }
