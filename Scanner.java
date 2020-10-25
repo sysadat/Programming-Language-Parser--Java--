@@ -8,6 +8,8 @@ public class Scanner {
     List<String> listOfKeywords;
     int currentLine;
     int currentCharIndex;
+    static final String[] stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
+    static final Set<String> setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
@@ -15,6 +17,39 @@ public class Scanner {
         listOfKeywords = keywordlist;
         currentLine = 0;
         currentCharIndex = 0;
+    }
+
+    // Identifier := ( _ | Alpha ) { ( _ | Digit | Alpha ) }
+    // Check if the string entered is an identifier. Returns true if it is an identifier, false otherwise. 
+    public boolean isIdentifier (String currString) {
+        boolean isIndentifierCheck;
+        char firstIndex = currString.charAt(0);
+        if (firstIndex != '_' || !isAlpha(firstIndex)) {
+            isIndentifierCheck = false;
+        } else {
+            for (int i = 0 ; i < currString.length(); i++) {
+                char currChar = currString.charAt(i);
+                if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
+                    isIndentifierCheck = false;
+                }
+            }
+            isIndentifierCheck = true;
+        }
+        return isIndentifierCheck;
+    }
+
+    // Operator := ( | , | ) | { | } | = | == | < | > | <= | >= | != | + | - | * | / | ;
+    // Check if character or string is an operator. Can take in either char or string. Will return true if it is an operator, false otherwise.
+    // If 0 is passed in for charOrString, that means we passed in a character. If 1, that means we passed in a string. 
+    public boolean isOperator(char currChar, String currString, int charOrString) {
+        boolean isOperatorCheck = false;
+        if (charOrString == 0) {
+            String charAsString = Character.toString(currChar);
+            isOperatorCheck = setOfOperators.contains(charAsString);
+        } else if (charOrString == 1) {
+            isOperatorCheck = setOfOperators.contains(currString);
+        }
+        return isOperatorCheck;
     }
 
     // Digit := 0 – 9
@@ -94,8 +129,8 @@ public class Scanner {
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
 
-        // Create a list of strings based on some of the Java keywords
-        List<String> keywordlist = Arrays.asList("abstract", "assert", "boolean", "case", "char", "catch", "continue", "else", "final", "short");
+        // Create a list of strings based on keywords from project 2 description
+        List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 

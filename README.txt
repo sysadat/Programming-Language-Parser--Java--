@@ -64,15 +64,22 @@ CSVParser.Java
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 
-TODO: DELETE THIS AND PUT THE NEW LIST OF KEYWORDS IN 
-
-- https://www.w3schools.com/java/java_ref_keywords.asp
-    - Used this website to see what lists of keywords were in Java.
-
 - https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
     - Used this website to see how to create a list of predefined strings in Java.
 
 - https://stackoverflow.com/questions/3844595/how-can-i-make-java-print-quotes-like-hello#:~:text=print(%22%5C%22Hello%5C,r%22%20and%20%22%5Cn%22
-    - Used this website to learn how to print out double quotes in Java. 
+    - Used this website to learn how to print out double quotes in Java.
+
+- https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
+    - Used this website to learn how to initialize a hash set during construction
+
+- https://beginnersbook.com/2019/04/java-char-to-string-conversion/
+    - Used this website to learn how to turn a character into a string. 
+
+- https://beginnersbook.com/2013/12/java-string-charat-method-example/#:~:text=The%20Java%20String%20charAt(int,string%20represented%20by%20instance%20s.
+    - Used this website to learn how to access characters in a string in Java.
+
+- https://stackoverflow.com/questions/12446074/how-do-i-check-every-value-in-a-java-string
+    - Used this website to learn how to iterate and check every value in a string in Java.
 
 -----------------------------------------------------------------------------------------------------------
