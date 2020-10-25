@@ -17,6 +17,15 @@ public class Scanner {
         currentCharIndex = 0;
     }
 
+    // Check if a character falls in the ASCII range for a digit. Returns true if it does, false otherwise
+    public boolean isDigit(char currChar) {
+        boolean isDigitCheck = false;
+        if (currChar >= '0' && currChar <= '9') {
+            isDigitCheck  = true;
+        }
+        return isDigitCheck;
+    }
+
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
         return null;
@@ -29,7 +38,7 @@ public class Scanner {
 
     // Print out the token's line number, character position, token type and token text
     public void printToken (Token tokenToPrint) {
-        System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber())+ ",\t"
+        System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber()) + ",\t"
                             + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
                             + tokenToPrint.getType().toString() + " " 
                             + "\"" + tokenToPrint.getText() + "\""); 
@@ -51,5 +60,8 @@ public class Scanner {
 
         Token MyToken = new Token("a", Token.TokenType.IDENTIFIER, 1, 5);
         scannerObject.printToken(MyToken);
+
+        System.out.println("For 3, the result is : " + scannerObject.isDigit('3'));
+        System.out.println("For a, the result is : " + scannerObject.isDigit('a'));
     }
 }
