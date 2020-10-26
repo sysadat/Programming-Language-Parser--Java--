@@ -69,11 +69,11 @@ public class Scanner {
         return isOperatorCheck;
     }
 
-    // 
     // IntConstant := [ - ] Digit { Digit }
-    // Check if character or string is an IntConstant. Will return true if it is an IntConstant, false otherwise.
+    // Check if a string is an IntConstant. Will return true if it is an IntConstant, false otherwise.
     public boolean isIntConstant(String currString) {
         boolean isIntConstantCheck = false;
+        // https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
         int stringLength = currString.length();
         if (stringLength == 0) {
             return false;
@@ -97,10 +97,24 @@ public class Scanner {
         return isIntConstantCheck; 
     }
 
-    // TODO
     // FloatConstant := [ - ] Digit { Digit } [ . Digit { Digit } ]
-    public boolean isFloatConstant() {
-        return true; 
+    // Check if a string is a FloatConstant. Will return true if it is an FloatConstant, false otherwise.
+    public boolean isFloatConstant(String currString) {
+        boolean isFloatConstantCheck = false;
+        int lastStringIndex = currString.length() - 1;
+        // We can't have '.' be the last character in a float constant. If there is a '.', a digit must follow after it
+        if (currString.charAt(lastStringIndex) == '.') {
+            return false; 
+        }
+        // https://www.geeksforgeeks.org/check-if-a-given-string-is-a-valid-number-integer-or-floating-point-in-java/
+        try { 
+            Float.parseFloat(currString); 
+            isFloatConstantCheck = true;
+            return isFloatConstantCheck;
+        } catch (NumberFormatException e) { 
+            isFloatConstantCheck = false;
+            return isFloatConstantCheck;
+        } 
     }
 
     // StringConstant := " { ( CharacterLiteral | EscapedCharacter ) } "

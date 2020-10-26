@@ -85,4 +85,7 @@ Scanner.Java
 - https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
     - Used this website to learn how to check if a string is a number in Java.
 
+- https://www.geeksforgeeks.org/check-if-a-given-string-is-a-valid-number-integer-or-floating-point-in-java/
+    - Used this website to learn how to check if a string is a float in Java. 
+
 -----------------------------------------------------------------------------------------------------------
