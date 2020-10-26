@@ -86,6 +86,6 @@ Scanner.Java
     - Used this website to learn how to check if a string is a number in Java.
 
 - https://www.geeksforgeeks.org/check-if-a-given-string-is-a-valid-number-integer-or-floating-point-in-java/
-    - Used this website to learn how to check if a string is a float in Java. 
+    - Used this website to learn how to check if a string is a float in Java.
 
 -----------------------------------------------------------------------------------------------------------

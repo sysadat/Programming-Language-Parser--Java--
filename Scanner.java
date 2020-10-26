@@ -238,6 +238,58 @@ public class Scanner {
         return tokenToReturn;
     }
 
+    public String getString () {
+        boolean doubleQuotesSeen = false;
+        boolean retStringBuilderEmpty = false;
+        StringBuilder retStringBuilder = new StringBuilder();
+        String retString;
+        int ahead = 0;
+        while (streamObject.peekAheadChar(ahead)!= -1) {
+            if (retStringBuilder.length() < 1) {
+                // TODO
+                // Get row and index vals
+                retStringBuilderEmpty = true;
+            }
+            char currChar = (char)streamObject.getNextChar();
+            char nextChar = (char)streamObject.peekNextChar();
+
+            if (currChar == '\"') {
+                doubleQuotesSeen = true;
+            }
+            // We want to skip whitespaces during tokenizing
+            if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
+                if (retStringBuilderEmpty) {
+                    continue;
+                } else {
+                    break;
+                }
+            }
+
+            retStringBuilder.append(currChar);
+            currentCharIndex++;
+            // TODO
+            // if () {
+
+            // }
+
+            // TODO
+            // if () {
+
+            // }
+        }
+        char nextChar = (char)streamObject.peekNextChar();
+        if (nextChar == '\n') {
+            streamObject.getNextChar();
+            currentCharIndex++;
+            currentLine++;
+        } else if (nextChar == ' ') {
+            streamObject.getNextChar();
+            currentCharIndex++;
+        }
+        retString = retStringBuilder.toString();
+        return retString;
+    }
+
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
         return null;
