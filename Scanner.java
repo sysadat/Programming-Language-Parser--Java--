@@ -10,6 +10,10 @@ public class Scanner {
     int currentCharIndex;
     String[] stringOfOperators;
     Set<String> setOfOperators;
+    boolean previousConstantOrIdentifier;
+    String noString = "S";
+    char noChar = 'C';
+
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
@@ -20,6 +24,7 @@ public class Scanner {
         // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
+        previousConstantOrIdentifier = false;
     }
 
     // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
@@ -195,6 +200,42 @@ public class Scanner {
             isEscapedCharacterCheck = true;
         }
         return isEscapedCharacterCheck;
+    }
+
+    public Token stringToToken (String currString) {
+        Token.TokenType typeOfToken;
+        boolean isStringKeyword = isKeyword(currString);
+        boolean isStringIdentifier = isIdentifier(currString);
+        boolean isStringOperator = isOperator(noChar, currString, 1);
+        boolean isStringIntConstant = isIntConstant(currString);
+        boolean isStringFloatConstant = isFloatConstant(currString);
+        boolean isStringStringConstant = isStringConstant(currString);
+
+        if (isStringKeyword) {
+            typeOfToken = Token.TokenType.KEYWORD;
+            previousConstantOrIdentifier = false;
+        } else if (isStringIdentifier) {
+            typeOfToken = Token.TokenType.IDENTIFIER;
+            previousConstantOrIdentifier = true;
+        } else if (isStringOperator) {
+            typeOfToken = Token.TokenType.OPERATOR;
+            previousConstantOrIdentifier = false;
+        } else if (isStringIntConstant) {
+            typeOfToken = Token.TokenType.INT_CONSTANT;
+            previousConstantOrIdentifier = true;
+        } else if (isStringFloatConstant) {
+            typeOfToken = Token.TokenType.FLOAT_CONSTANT;
+            previousConstantOrIdentifier = true;
+        } else if (isStringStringConstant) {
+            typeOfToken = Token.TokenType.STRING_CONSTANT;
+            previousConstantOrIdentifier = true;
+        }
+        // If the string does not match any of the previous tokens, it is invalid
+        typeOfToken = Token.TokenType.INVALID;
+        previousConstantOrIdentifier = false;
+
+        Token tokenToReturn = new Token(currString, typeOfToken, currentLine, currentCharIndex);
+        return tokenToReturn;
     }
 
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
