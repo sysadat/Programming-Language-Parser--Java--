@@ -8,15 +8,17 @@ public class Scanner {
     List<String> listOfKeywords;
     int currentLine;
     int currentCharIndex;
-    static final String[] stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
-    static final Set<String> setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
+    String[] stringOfOperators;
+    Set<String> setOfOperators;
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
         streamObject = stream;
         listOfKeywords = keywordlist;
-        currentLine = 0;
-        currentCharIndex = 0;
+        currentLine = 1;
+        currentCharIndex = 1;
+        stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
+        setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
     }
 
     // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
