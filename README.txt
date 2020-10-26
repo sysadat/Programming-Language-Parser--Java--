@@ -88,4 +88,7 @@ Scanner.Java
 - https://www.geeksforgeeks.org/check-if-a-given-string-is-a-valid-number-integer-or-floating-point-in-java/
     - Used this website to learn how to check if a string is a float in Java.
 
+- https://stackoverflow.com/questions/328249/how-to-concatenate-characters-in-java
+    - Used this webiste to learn how to add characyers together in Java. 
+
 -----------------------------------------------------------------------------------------------------------

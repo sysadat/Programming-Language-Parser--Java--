@@ -6,7 +6,7 @@ public class Scanner {
     // Class attributes
     StreamClass streamObject;
     List<String> listOfKeywords;
-    int currentLine;
+    int currentLineIndex;
     int currentCharIndex;
     String[] stringOfOperators;
     Set<String> setOfOperators;
@@ -14,13 +14,12 @@ public class Scanner {
     String noString = "S";
     char noChar = 'C';
 
-
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
         streamObject = stream;
         listOfKeywords = keywordlist;
-        currentLine = 1;
-        currentCharIndex = 1;
+        currentLineIndex = 1;
+        currentCharIndex = 0;
         // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
@@ -229,12 +228,14 @@ public class Scanner {
         } else if (isStringStringConstant) {
             typeOfToken = Token.TokenType.STRING_CONSTANT;
             previousConstantOrIdentifier = true;
+        } else {
+            // If the string does not match any of the previous tokens, it is invalid
+            typeOfToken = Token.TokenType.INVALID;
+            previousConstantOrIdentifier = false;
         }
-        // If the string does not match any of the previous tokens, it is invalid
-        typeOfToken = Token.TokenType.INVALID;
-        previousConstantOrIdentifier = false;
 
-        Token tokenToReturn = new Token(currString, typeOfToken, currentLine, currentCharIndex);
+
+        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex);
         return tokenToReturn;
     }
 
@@ -243,8 +244,8 @@ public class Scanner {
         boolean retStringBuilderEmpty = false;
         StringBuilder retStringBuilder = new StringBuilder();
         String retString;
-        int ahead = 0;
-        while (streamObject.peekAheadChar(ahead)!= -1) {
+        int aheadIndex = 0;
+        while (streamObject.peekAheadChar(aheadIndex)!= -1) {
             if (retStringBuilder.length() < 1) {
                 // TODO
                 // Get row and index vals
@@ -267,21 +268,44 @@ public class Scanner {
 
             retStringBuilder.append(currChar);
             currentCharIndex++;
-            // TODO
-            // if () {
+            if (!doubleQuotesSeen) {
+                String currcharAsString = Character.toString(currChar);
+                String nextCharAsString = Character.toString(nextChar);
+                String operatorCheck = currcharAsString + nextCharAsString;
+                String currStringBuilder = retStringBuilder.toString();
+                int currStringBuilderLength = currStringBuilder.length();
+                if (isOperator(noChar, operatorCheck, 1)) {
+                    continue;
+                } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    break;
+                } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    break;
+                } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
+                          (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    break;
+                } 
+                else if (isOperator(currChar, noString, 0) && 
+                        (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    break;
+                } else if (isIdentifier(currStringBuilder) && (isOperator(currChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                    break;
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) || !isDigit(currChar) || isOperator(currChar, noString, 0))) {
+                    break;
+                }
+            }
 
-            // }
-
-            // TODO
-            // if () {
-
-            // }
+            String builderToString = retStringBuilder.toString();
+            if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
+                break;
+            }
+            aheadIndex++;
         }
+
         char nextChar = (char)streamObject.peekNextChar();
         if (nextChar == '\n') {
             streamObject.getNextChar();
             currentCharIndex++;
-            currentLine++;
+            currentLineIndex++;
         } else if (nextChar == ' ') {
             streamObject.getNextChar();
             currentCharIndex++;
@@ -297,7 +321,13 @@ public class Scanner {
 
     // Returns the next token and consumes it. If no more tokens are available a None token is returned.
     public Token getNextToken() {
-        return null;
+        if (streamObject.moreAvailable()) {
+            String tokenizableString = getString();
+            Token retToken = stringToToken(tokenizableString);
+            return retToken;
+        }
+        Token noneToken = new Token("", Token.TokenType.NONE, currentLineIndex, currentCharIndex);
+        return noneToken;
     }
 
     // Print out the token's line number, character position, token type and token text
@@ -306,6 +336,20 @@ public class Scanner {
                             + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
                             + tokenToPrint.getType().toString() + " " 
                             + "\"" + tokenToPrint.getText() + "\""); 
+    }
+
+    public void tokenizeFile (){
+        boolean tokenizing = true;
+        while (tokenizing) {
+            Token newToken = getNextToken();
+            Token.TokenType typeOfToken = newToken.getType();
+            if (typeOfToken != Token.TokenType.NONE) {
+                printToken(newToken);
+            } else {
+                printToken(newToken);
+                break;
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -323,8 +367,7 @@ public class Scanner {
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        // Token MyToken = new Token("a", Token.TokenType.IDENTIFIER, 1, 5);
-        // scannerObject.printToken(MyToken);
+        scannerObject.tokenizeFile();
 
     }
 }
