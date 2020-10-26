@@ -4,6 +4,7 @@ import java.io.IOException;
 // Create the Scanner class
 public class Scanner {
     // Class attributes
+    int testing = 0;
     StreamClass streamObject;
     List<String> listOfKeywords;
     int currentLineIndex;
@@ -11,15 +12,15 @@ public class Scanner {
     String[] stringOfOperators;
     Set<String> setOfOperators;
     boolean previousConstantOrIdentifier;
-    String noString = "S";
-    char noChar = 'C';
+    static String noString = "S";
+    static char noChar = 'C';
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
         streamObject = stream;
         listOfKeywords = keywordlist;
         currentLineIndex = 1;
-        currentCharIndex = 0;
+        currentCharIndex = 1;
         // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
@@ -45,7 +46,7 @@ public class Scanner {
 
         boolean isIndentifierCheck = false;
         char firstIndex = currString.charAt(0);
-        if (firstIndex != '_' || !isAlpha(firstIndex)) {
+        if (firstIndex != '_' && !isAlpha(firstIndex)) {
             isIndentifierCheck = false;
         } else {
             for (int i = 0; i < currString.length(); i++) {
@@ -57,6 +58,8 @@ public class Scanner {
             }
             isIndentifierCheck = true;
         }
+        System.out.println("isIndentifierCheck is : " + isIndentifierCheck);
+
         return isIndentifierCheck;
     }
 
@@ -64,6 +67,8 @@ public class Scanner {
     // Check if character or string is an operator. Can take in either char or string. Will return true if it is an operator, false otherwise.
     // If 0 is passed in for charOrString, that means we passed in a character. If 1, that means we passed in a string. 
     public boolean isOperator(char currChar, String currString, int charOrString) {
+        System.out.println("testing is : " + testing);
+        testing++;
         boolean isOperatorCheck = false;
         if (charOrString == 0) {
             String charAsString = Character.toString(currChar);
@@ -71,6 +76,7 @@ public class Scanner {
         } else if (charOrString == 1) {
             isOperatorCheck = setOfOperators.contains(currString);
         }
+        System.out.println("isOperatorCheck is : " + isOperatorCheck);
         return isOperatorCheck;
     }
 
@@ -234,7 +240,6 @@ public class Scanner {
             previousConstantOrIdentifier = false;
         }
 
-
         Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex);
         return tokenToReturn;
     }
@@ -265,37 +270,46 @@ public class Scanner {
                     break;
                 }
             }
-
             retStringBuilder.append(currChar);
+            System.out.println("retStringBuilder after append is: " + retStringBuilder.toString());
             currentCharIndex++;
+
             if (!doubleQuotesSeen) {
                 String currcharAsString = Character.toString(currChar);
                 String nextCharAsString = Character.toString(nextChar);
                 String operatorCheck = currcharAsString + nextCharAsString;
                 String currStringBuilder = retStringBuilder.toString();
+                System.out.println("in quotes is: " + currStringBuilder);
                 int currStringBuilderLength = currStringBuilder.length();
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    System.out.println("ww");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    System.out.println("a");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    System.out.println("9");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
-                          (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                        System.out.println("b");
                     break;
-                } 
-                else if (isOperator(currChar, noString, 0) && 
-                        (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                } else if (isOperator(currChar, noString, 0) && 
+                    (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                        System.out.println("q");
                     break;
-                } else if (isIdentifier(currStringBuilder) && (isOperator(currChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                    System.out.println("f");
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) || !isDigit(currChar) || isOperator(currChar, noString, 0))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && isOperator(currChar, noString, 0))) {
+                    System.out.println("WTF LOL");
                     break;
                 }
             }
 
             String builderToString = retStringBuilder.toString();
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
+                System.out.println("Z");
                 break;
             }
             aheadIndex++;
@@ -311,6 +325,7 @@ public class Scanner {
             currentCharIndex++;
         }
         retString = retStringBuilder.toString();
+        System.out.println("retString is : " + retString);
         return retString;
     }
 
@@ -369,5 +384,11 @@ public class Scanner {
 
         scannerObject.tokenizeFile();
 
+        // TESTING
+        // Token newToken = scannerObject.stringToToken("_AL");
+        // scannerObject.printToken(newToken);
+
+        Token newToken = scannerObject.stringToToken("LOOOL");
+        scannerObject.printToken(newToken);
     }
 }
