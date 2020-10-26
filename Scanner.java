@@ -17,6 +17,7 @@ public class Scanner {
         listOfKeywords = keywordlist;
         currentLine = 1;
         currentCharIndex = 1;
+        // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
     }
@@ -224,6 +225,7 @@ public class Scanner {
         String inputtedFileName = args[0];
 
         // Create a list of strings based on keywords from project 2 description
+        // https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
         List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
