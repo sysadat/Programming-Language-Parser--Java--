@@ -38,7 +38,7 @@ public class Scanner {
             return false;
         }
 
-        boolean isIndentifierCheck;
+        boolean isIndentifierCheck = false;
         char firstIndex = currString.charAt(0);
         if (firstIndex != '_' || !isAlpha(firstIndex)) {
             isIndentifierCheck = false;
@@ -47,6 +47,7 @@ public class Scanner {
                 char currChar = currString.charAt(i);
                 if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
                     isIndentifierCheck = false;
+                    break;
                 }
             }
             isIndentifierCheck = true;
@@ -68,12 +69,36 @@ public class Scanner {
         return isOperatorCheck;
     }
 
-    // TODO
-    public boolean isIntConstant() {
-        return true; 
+    // 
+    // IntConstant := [ - ] Digit { Digit }
+    // Check if character or string is an IntConstant. Will return true if it is an IntConstant, false otherwise.
+    public boolean isIntConstant(String currString) {
+        boolean isIntConstantCheck = false;
+        int stringLength = currString.length();
+        if (stringLength == 0) {
+            return false;
+        }
+        int i = 0;
+        // If the string is just '-' that means it is not an int constant
+        if (currString.charAt(0) == '-') {
+            if (stringLength == 1) {
+                isIntConstantCheck = false;
+            }
+            i = 1;
+        }
+        for (; i < stringLength; i++) {
+            char currChar = currString.charAt(i);
+            if (!isDigit(currChar)) {
+                isIntConstantCheck = false;
+                break;
+            }
+        }
+        isIntConstantCheck = true;
+        return isIntConstantCheck; 
     }
 
     // TODO
+    // FloatConstant := [ - ] Digit { Digit } [ . Digit { Digit } ]
     public boolean isFloatConstant() {
         return true; 
     }
@@ -98,6 +123,7 @@ public class Scanner {
                 char currChar = currString.charAt(i);
                 if (!isCharacterLiteral(currChar) || !isEscapedCharacter(currChar)) {
                     isStringConstantCheck = false;
+                    break;
                 }
             }
             isStringConstantCheck = true;

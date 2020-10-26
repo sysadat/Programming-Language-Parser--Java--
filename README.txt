@@ -82,4 +82,7 @@ Scanner.Java
 - https://stackoverflow.com/questions/12446074/how-do-i-check-every-value-in-a-java-string
     - Used this website to learn how to iterate and check every value in a string in Java.
 
+- https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
+    - Used this website to learn how to check if a string is a number in Java.
+
 -----------------------------------------------------------------------------------------------------------
