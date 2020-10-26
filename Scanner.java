@@ -4,7 +4,6 @@ import java.io.IOException;
 // Create the Scanner class
 public class Scanner {
     // Class attributes
-    int testing = 0;
     StreamClass streamObject;
     List<String> listOfKeywords;
     int currentLineIndex;
@@ -58,7 +57,6 @@ public class Scanner {
             }
             isIndentifierCheck = true;
         }
-        System.out.println("isIndentifierCheck is : " + isIndentifierCheck);
 
         return isIndentifierCheck;
     }
@@ -67,8 +65,6 @@ public class Scanner {
     // Check if character or string is an operator. Can take in either char or string. Will return true if it is an operator, false otherwise.
     // If 0 is passed in for charOrString, that means we passed in a character. If 1, that means we passed in a string. 
     public boolean isOperator(char currChar, String currString, int charOrString) {
-        System.out.println("testing is : " + testing);
-        testing++;
         boolean isOperatorCheck = false;
         if (charOrString == 0) {
             String charAsString = Character.toString(currChar);
@@ -76,7 +72,6 @@ public class Scanner {
         } else if (charOrString == 1) {
             isOperatorCheck = setOfOperators.contains(currString);
         }
-        System.out.println("isOperatorCheck is : " + isOperatorCheck);
         return isOperatorCheck;
     }
 
@@ -271,7 +266,6 @@ public class Scanner {
                 }
             }
             retStringBuilder.append(currChar);
-            System.out.println("retStringBuilder after append is: " + retStringBuilder.toString());
             currentCharIndex++;
 
             if (!doubleQuotesSeen) {
@@ -279,37 +273,28 @@ public class Scanner {
                 String nextCharAsString = Character.toString(nextChar);
                 String operatorCheck = currcharAsString + nextCharAsString;
                 String currStringBuilder = retStringBuilder.toString();
-                System.out.println("in quotes is: " + currStringBuilder);
                 int currStringBuilderLength = currStringBuilder.length();
                 if (isOperator(noChar, operatorCheck, 1)) {
-                    System.out.println("ww");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
-                    System.out.println("a");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
-                    System.out.println("9");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
-                        System.out.println("b");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
-                        System.out.println("q");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
-                    System.out.println("f");
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && isOperator(currChar, noString, 0))) {
-                    System.out.println("WTF LOL");
                     break;
                 }
             }
 
             String builderToString = retStringBuilder.toString();
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
-                System.out.println("Z");
                 break;
             }
             aheadIndex++;
@@ -325,7 +310,6 @@ public class Scanner {
             currentCharIndex++;
         }
         retString = retStringBuilder.toString();
-        System.out.println("retString is : " + retString);
         return retString;
     }
 
