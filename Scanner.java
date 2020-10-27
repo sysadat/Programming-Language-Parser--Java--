@@ -19,7 +19,7 @@ public class Scanner {
         streamObject = stream;
         listOfKeywords = keywordlist;
         currentLineIndex = 1;
-        currentCharIndex = 1;
+        currentCharIndex = 0;
         // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
@@ -261,9 +261,9 @@ public class Scanner {
             }
             // We want to skip whitespaces during tokenizing
             if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
-                // if (retStringBuilderEmpty) {
-                if (retStringBuilder.length() == 0) {
-                    System.out.println("is");
+                if (retStringBuilderEmpty) {
+                // if (retStringBuilder.length() == 0) {
+                    // System.out.println("is");
                     continue;
                 } else {
                     break;
@@ -381,7 +381,7 @@ public class Scanner {
         scannerObject.tokenizeFile();
 
         // Testing
-        // TODO: Fix floats, char, invalid characters, sub after constant, underscore following constant
+        // TODO: Fix constant - constant, char, invalid characters, underscore following constant
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
 
