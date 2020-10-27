@@ -96,7 +96,7 @@ public class Scanner {
             char currChar = currString.charAt(i);
             if (!isDigit(currChar)) {
                 isIntConstantCheck = false;
-                break;
+                return isIntConstantCheck; 
             }
         }
         isIntConstantCheck = true;
@@ -366,11 +366,14 @@ public class Scanner {
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        scannerObject.tokenizeFile();
+        // scannerObject.tokenizeFile();
 
         // Testing
         // TODO: Fix floats, char, invalid characters, sub after constant, underscore following constant
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
+
+        Token newToken = scannerObject.stringToToken("4.20");
+        scannerObject.printToken(newToken);
     }
 }
