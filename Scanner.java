@@ -51,9 +51,9 @@ public class Scanner {
         } else {
             for (int i = 0; i < currString.length(); i++) {
                 char currChar = currString.charAt(i);
-                if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
+                if (currChar != '_' && !isDigit(currChar) && !isAlpha(currChar)) {
                     isIndentifierCheck = false;
-                    // return isIndentifierCheck;
+                    return isIndentifierCheck;
                 }
             }
             isIndentifierCheck = true;
@@ -246,7 +246,8 @@ public class Scanner {
         StringBuilder retStringBuilder = new StringBuilder();
         String retString;
         int aheadIndex = 0;
-        while (streamObject.peekAheadChar(aheadIndex)!= -1) {
+
+        while (streamObject.moreAvailable()) {
             if (retStringBuilder.length() < 1) {
                 // TODO
                 // Get row and index vals
@@ -260,7 +261,9 @@ public class Scanner {
             }
             // We want to skip whitespaces during tokenizing
             if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
-                if (retStringBuilderEmpty) {
+                // if (retStringBuilderEmpty) {
+                if (retStringBuilder.length() == 0) {
+                    System.out.println("is");
                     continue;
                 } else {
                     break;
@@ -275,21 +278,29 @@ public class Scanner {
                 String operatorCheck = currcharAsString + nextCharAsString;
                 String currStringBuilder = retStringBuilder.toString();
                 int currStringBuilderLength = currStringBuilder.length();
+
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    // System.out.println("S");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("E");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("Q");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    // System.out.println("YOLO");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
-                    (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                    // System.out.println("R");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                    // System.out.println("F");
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && isOperator(currChar, noString, 0))) {
+                    // System.out.println("Z");
                     break;
                 }
             }
@@ -374,7 +385,7 @@ public class Scanner {
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
 
-        // Token newToken = scannerObject.stringToToken("4.20");
-        // scannerObject.printToken(newToken);
+        // Token newToken1 = scannerObject.stringToToken("5.02");
+        // scannerObject.printToken(newToken1);
     }
 }
