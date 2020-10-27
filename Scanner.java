@@ -53,7 +53,7 @@ public class Scanner {
                 char currChar = currString.charAt(i);
                 if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
                     isIndentifierCheck = false;
-                    return isIndentifierCheck;
+                    // return isIndentifierCheck;
                 }
             }
             isIndentifierCheck = true;
@@ -367,14 +367,14 @@ public class Scanner {
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        // scannerObject.tokenizeFile();
+        scannerObject.tokenizeFile();
 
         // Testing
         // TODO: Fix floats, char, invalid characters, sub after constant, underscore following constant
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
 
-        Token newToken = scannerObject.stringToToken("4.20");
-        scannerObject.printToken(newToken);
+        // Token newToken = scannerObject.stringToToken("4.20");
+        // scannerObject.printToken(newToken);
     }
 }
