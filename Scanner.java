@@ -368,11 +368,9 @@ public class Scanner {
 
         scannerObject.tokenizeFile();
 
-        // TESTING
-        // Token newToken = scannerObject.stringToToken("_AL");
+        // Testing
+        // TODO: Fix floats, char, invalid characters, sub after constant, underscore following constant
+        // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
-
-        Token newToken = scannerObject.stringToToken("LOOOL");
-        scannerObject.printToken(newToken);
     }
 }

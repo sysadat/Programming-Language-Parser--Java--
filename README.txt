@@ -89,6 +89,6 @@ Scanner.Java
     - Used this website to learn how to check if a string is a float in Java.
 
 - https://stackoverflow.com/questions/328249/how-to-concatenate-characters-in-java
-    - Used this webiste to learn how to add characyers together in Java. 
+    - Used this website to learn how to add characters together in Java. 
 
 -----------------------------------------------------------------------------------------------------------
