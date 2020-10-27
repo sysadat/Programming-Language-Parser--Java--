@@ -47,12 +47,13 @@ public class Scanner {
         char firstIndex = currString.charAt(0);
         if (firstIndex != '_' && !isAlpha(firstIndex)) {
             isIndentifierCheck = false;
+            return isIndentifierCheck;
         } else {
             for (int i = 0; i < currString.length(); i++) {
                 char currChar = currString.charAt(i);
                 if (currChar != '_' || !isDigit(currChar) || !isAlpha(currChar)) {
                     isIndentifierCheck = false;
-                    break;
+                    return isIndentifierCheck;
                 }
             }
             isIndentifierCheck = true;
