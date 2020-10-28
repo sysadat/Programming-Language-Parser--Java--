@@ -289,6 +289,11 @@ public class Scanner {
                 String currStringBuilder = retStringBuilder.toString();
                 int currStringBuilderLength = currStringBuilder.length();
 
+                // System.out.println("currChar is : " + currChar);
+                // System.out.println("currStringBuilderLength is : " + currStringBuilderLength);
+                // System.out.println("isOperator(currChar, noString, 0) is : " + isOperator(currChar, noString, 0));
+
+
                 if (isOperator(noChar, operatorCheck, 1)) {
                     // System.out.println("S");
                     continue;
@@ -309,7 +314,7 @@ public class Scanner {
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
                     // System.out.println("F");
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && isOperator(currChar, noString, 0))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
                     // System.out.println("Z");
                     break;
                 }
@@ -394,7 +399,7 @@ public class Scanner {
         scannerObject.tokenizeFile();
 
         // Testing
-        // TODO: Fix constant - constant, char, invalid characters, underscore following constant
+        // TODO: Invalid characters, underscore following constant
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
 
