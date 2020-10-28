@@ -20,6 +20,7 @@ public class Scanner {
         listOfKeywords = keywordlist;
         currentLineIndex = 1;
         currentCharIndex = 0;
+        // TODO
         // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
         stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
@@ -256,32 +257,21 @@ public class Scanner {
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
 
-            // System.out.println("currChar is : " + currChar);
-            // System.out.println("nextChar is : " + nextChar);
-
             if (currChar == '\"') {
                 doubleQuotesSeen = true;
             }
 
-            // System.out.println("retStringBuilderEmpty is : " + retStringBuilderEmpty);
-
             // We want to skip whitespaces during tokenizing
             if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
-                // System.out.println("is");
                 if (retStringBuilderEmpty) {
-                // if (retStringBuilder.length() == 0) {
-                    // System.out.println("is");
-                    // System.out.println("poo");
                     continue;
                 } else {
-                    // System.out.println("pee");
                     break;
                 }
             }
             retStringBuilder.append(currChar);
             currentCharIndex++;
 
-            // System.out.println("test");
             if (!doubleQuotesSeen) {
                 String currcharAsString = Character.toString(currChar);
                 String nextCharAsString = Character.toString(nextChar);
@@ -289,33 +279,21 @@ public class Scanner {
                 String currStringBuilder = retStringBuilder.toString();
                 int currStringBuilderLength = currStringBuilder.length();
 
-                // System.out.println("currChar is : " + currChar);
-                // System.out.println("currStringBuilderLength is : " + currStringBuilderLength);
-                // System.out.println("isOperator(currChar, noString, 0) is : " + isOperator(currChar, noString, 0));
-
-
                 if (isOperator(noChar, operatorCheck, 1)) {
-                    // System.out.println("S");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
-                    // System.out.println("E");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
-                    // System.out.println("Q");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
-                    // System.out.println("YOLO");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
-                    // System.out.println("R");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
-                    // System.out.println("F");
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
-                    // System.out.println("Z");
                     break;
                 }
             }
@@ -328,14 +306,11 @@ public class Scanner {
         }
 
         char nextChar = (char)streamObject.peekNextChar();
-        // System.out.println("nextChar here is : " + nextChar);
         if (nextChar == '\n') {
-            // System.out.println("LOl");
             streamObject.getNextChar();
             currentCharIndex++;
             currentLineIndex++;
         } else if (nextChar == ' ') {
-            // System.out.println("LOl");
             streamObject.getNextChar();
             currentCharIndex++;
         }
@@ -345,6 +320,7 @@ public class Scanner {
 
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
+        // TODO
         return null;
     }
 
@@ -392,18 +368,12 @@ public class Scanner {
 
         // Create a list of strings based on keywords from project 2 description
         // https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
+        // TODO
         List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
         StreamClass stream = new StreamClass(inputtedFileName);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
         scannerObject.tokenizeFile();
 
-        // Testing
-        // TODO:
-        // Token newToken = scannerObject.stringToToken("newVar");
-        // scannerObject.printToken(newToken);
-
-        // Token newToken1 = scannerObject.stringToToken("5.02");
-        // scannerObject.printToken(newToken1);
     }
 }
