@@ -92,3 +92,11 @@ Scanner.Java
     - Used this website to learn how to add characters together in Java. 
 
 -----------------------------------------------------------------------------------------------------------
+TODO: 
+- Fix underscore leading for indentifier
+- empty string for string constant
+- the double quotes showing up in string constant
+- invalid for escaped character string 
+- multiple line invalid 
+- invalid for string constant 
+- why string constant only comes back with one double quote
