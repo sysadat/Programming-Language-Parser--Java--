@@ -242,12 +242,12 @@ public class Scanner {
 
     public String getString () {
         boolean doubleQuotesSeen = false;
-        boolean retStringBuilderEmpty = false;
         StringBuilder retStringBuilder = new StringBuilder();
         String retString;
         int aheadIndex = 0;
 
         while (streamObject.moreAvailable()) {
+            boolean retStringBuilderEmpty = false;
             if (retStringBuilder.length() < 1) {
                 // TODO
                 // Get row and index vals
@@ -256,22 +256,32 @@ public class Scanner {
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
 
+            // System.out.println("currChar is : " + currChar);
+            // System.out.println("nextChar is : " + nextChar);
+
             if (currChar == '\"') {
                 doubleQuotesSeen = true;
             }
+
+            // System.out.println("retStringBuilderEmpty is : " + retStringBuilderEmpty);
+
             // We want to skip whitespaces during tokenizing
             if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
+                // System.out.println("is");
                 if (retStringBuilderEmpty) {
                 // if (retStringBuilder.length() == 0) {
                     // System.out.println("is");
+                    // System.out.println("poo");
                     continue;
                 } else {
+                    // System.out.println("pee");
                     break;
                 }
             }
             retStringBuilder.append(currChar);
             currentCharIndex++;
 
+            // System.out.println("test");
             if (!doubleQuotesSeen) {
                 String currcharAsString = Character.toString(currChar);
                 String nextCharAsString = Character.toString(nextChar);
@@ -313,11 +323,14 @@ public class Scanner {
         }
 
         char nextChar = (char)streamObject.peekNextChar();
+        // System.out.println("nextChar here is : " + nextChar);
         if (nextChar == '\n') {
+            // System.out.println("LOl");
             streamObject.getNextChar();
             currentCharIndex++;
             currentLineIndex++;
         } else if (nextChar == ' ') {
+            // System.out.println("LOl");
             streamObject.getNextChar();
             currentCharIndex++;
         }
