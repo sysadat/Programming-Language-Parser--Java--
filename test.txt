@@ -1,2 +1,1 @@
-int a = 5;
-int b = 2;
+var a = "lol";
