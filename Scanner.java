@@ -399,7 +399,7 @@ public class Scanner {
         scannerObject.tokenizeFile();
 
         // Testing
-        // TODO: Invalid characters, underscore following constant
+        // TODO:
         // Token newToken = scannerObject.stringToToken("newVar");
         // scannerObject.printToken(newToken);
 
