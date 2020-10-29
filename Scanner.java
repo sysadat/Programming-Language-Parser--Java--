@@ -358,6 +358,15 @@ public class Scanner {
     }
 
     public static void main(String[] args) throws IOException {
+        // TODO: 
+        // - Fix underscore leading for indentifier
+        // - empty string for string constant
+        // - the double quotes showing up in string constant
+        // - invalid for escaped character string 
+        // - multiple line invalid 
+        // - invalid for string constant 
+        // - why string constant only comes back with one double quote
+
         // If the user did not specify a file or put more than one file
         if (args.length != 1) {
             throw new IllegalArgumentException("Please enter the name of the file that you wish to use.");
