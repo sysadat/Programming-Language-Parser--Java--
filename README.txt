@@ -64,8 +64,8 @@ CSVParser.Java
 -----------------------------------------------------------------------------------------------------------
 Scanner.Java 
 
-- https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
-    - Used this website to see how to create a list of predefined strings in Java.
+- https://www.edureka.co/community/7700/static-method-cannot-referenced-from-static-context-error
+    - Uesd this to fix an error I was getting when returning a string in Java.
 
 - https://stackoverflow.com/questions/3844595/how-can-i-make-java-print-quotes-like-hello#:~:text=print(%22%5C%22Hello%5C,r%22%20and%20%22%5Cn%22
     - Used this website to learn how to print out double quotes in Java.

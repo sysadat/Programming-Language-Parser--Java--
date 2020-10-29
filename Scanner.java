@@ -378,32 +378,20 @@ public class Scanner {
 
         // Get the name of the file inputted from the user in the command line
         String inputtedFileName = args[0];
+        StreamClass stream = new StreamClass(inputtedFileName);
 
         // Create a list of strings based on keywords from project 2 description
-        // https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
-        // TODO
-        // List<String> keywordlist = new ArrayList<String>();
-        // https://www.journaldev.com/33297/java-list-add-addall-methods
-        // keywordlist.add("unsigned");
-        // keywordlist.add("char");
-        // keywordlist.add("short");
-        // keywordlist.add("int");
-        // keywordlist.add("long");
-        // keywordlist.add("float");
-        // keywordlist.add("double");
-        // keywordlist.add("while");
-        // keywordlist.add("if");
-        // keywordlist.add("void");
-        // keywordlist.add("main");
-        // System.out.println(keywordlist);
-        StreamClass stream = new StreamClass(inputtedFileName);
-        List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
+        String[] stringOfKeyWords = getKeywords();
+        List<String> keywordlist =  Arrays.asList(stringOfKeyWords);
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        // scannerObject.tokenizeFile();
+        scannerObject.tokenizeFile();
 
-        System.out.println(scannerObject.setOfOperators);
+    }
 
-
+    // Helper function that takes in key words, in this instance the keywords from project 2, and then returns them
+    public static String[] getKeywords() {
+        String[] retString = new String[] {"unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main"};
+        return retString;
     }
 }
