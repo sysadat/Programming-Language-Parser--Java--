@@ -341,10 +341,18 @@ public class Scanner {
 
     // Print out the token's line number, character position, token type and token text
     public void printToken (Token tokenToPrint) {
-        System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber()) + ",\t"
-                            + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
-                            + tokenToPrint.getType().toString() + " " 
-                            + "\"" + tokenToPrint.getText() + "\""); 
+        // Don't print out the double quotes when we are printing out a string constant
+        if (tokenToPrint.getType() == Token.TokenType.STRING_CONSTANT) {
+            System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber()) + ",\t"
+            + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
+            + tokenToPrint.getType().toString() + " " 
+            + tokenToPrint.getText()); 
+        } else {
+            System.out.println("@\t" + Integer.toString(tokenToPrint.getLineNumber()) + ",\t"
+            + Integer.toString(tokenToPrint.getCharPosition()) + "\t"
+            + tokenToPrint.getType().toString() + " " 
+            + "\"" + tokenToPrint.getText() + "\""); 
+        }
     }
 
     public void tokenizeFile (){
