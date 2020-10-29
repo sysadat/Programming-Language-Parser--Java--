@@ -249,13 +249,10 @@ public class Scanner {
         boolean doubleQuotesSeen = false;
         StringBuilder retStringBuilder = new StringBuilder();
         String retString;
-        int aheadIndex = 0;
 
         while (streamObject.moreAvailable()) {
             boolean retStringBuilderEmpty = false;
             if (retStringBuilder.length() < 1) {
-                // TODO
-                // Get row and index vals
                 retStringBuilderEmpty = true;
             }
             char currChar = (char)streamObject.getNextChar();
@@ -306,13 +303,14 @@ public class Scanner {
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
                 break;
             }
-            aheadIndex++;
         }
 
         char nextChar = (char)streamObject.peekNextChar();
         if (nextChar == '\n') {
             streamObject.getNextChar();
-            currentCharIndex++;
+            // currentCharIndex++;
+            // These two are new
+            currentCharIndex = 1;
             currentLineIndex++;
         } else if (nextChar == ' ') {
             streamObject.getNextChar();
@@ -335,7 +333,7 @@ public class Scanner {
             Token retToken = stringToToken(tokenizableString);
             return retToken;
         }
-        Token noneToken = new Token("", Token.TokenType.NONE, currentLineIndex, currentCharIndex);
+        Token noneToken = new Token("", Token.TokenType.NONE, ++currentLineIndex, 1);
         return noneToken;
     }
 
