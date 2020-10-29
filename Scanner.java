@@ -15,6 +15,7 @@ public class Scanner {
     boolean previousConstantOrIdentifier;
     static String noString = "S";
     static char noChar = 'C';
+    boolean nextCharIsNewLine = false;
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
@@ -242,6 +243,11 @@ public class Scanner {
         }
 
         Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex);
+        if (nextCharIsNewLine) {
+            currentLineIndex++;
+            currentCharIndex = 1;
+            nextCharIsNewLine = false;
+        }
         return tokenToReturn;
     }
 
@@ -308,10 +314,7 @@ public class Scanner {
         char nextChar = (char)streamObject.peekNextChar();
         if (nextChar == '\n') {
             streamObject.getNextChar();
-            // currentCharIndex++;
-            // These two are new
-            currentCharIndex = 1;
-            currentLineIndex++;
+            nextCharIsNewLine = true;
         } else if (nextChar == ' ') {
             streamObject.getNextChar();
             currentCharIndex++;
