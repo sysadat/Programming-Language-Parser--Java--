@@ -137,6 +137,12 @@ public class Scanner {
         // The smallest a string constant can be is an empty string (""). Therefore, if the size is smaller than that we can just return false
         if (stringLength < 2) {
             return false;
+        } else if (stringLength == 2) {
+            char initialIndex = currString.charAt(0);
+            char secondIndex = currString.charAt(1);
+            if (initialIndex == '\"' && secondIndex == '\"') {
+                return true;
+            }
         }
         int lastIndexInt = stringLength - 1;
         boolean isStringConstantCheck = false;
