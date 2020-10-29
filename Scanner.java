@@ -22,7 +22,7 @@ public class Scanner {
         streamObject = stream;
         listOfKeywords = keywordlist;
         currentLineIndex = 1;
-        currentCharIndex = 0;
+        currentCharIndex = 1;
         stringOfSingleCharOperators = new String[] {"(", ",", ")", "{", "}", "=", "<", ">", "+", "-", "*", "/", ";"};
         stringOfDoubleCharOperators = new String[] {"==", "<=", ">=", "!="};
         // https://stackoverflow.com/questions/80476/how-can-i-concatenate-two-arrays-in-java
@@ -247,8 +247,9 @@ public class Scanner {
             typeOfToken = Token.TokenType.INVALID;
             previousConstantOrIdentifier = false;
         }
-
-        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex);
+        // TEST
+        // System.out.println("currentCharIndex is :" + currentCharIndex);
+        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
         if (nextCharIsNewLine) {
             currentLineIndex++;
             currentCharIndex = 1;
@@ -323,7 +324,8 @@ public class Scanner {
             nextCharIsNewLine = true;
         } else if (nextChar == ' ') {
             streamObject.getNextChar();
-            currentCharIndex++;
+            // TEST
+            // currentCharIndex++;
         }
         retString = retStringBuilder.toString();
         return retString;
@@ -379,7 +381,6 @@ public class Scanner {
     public static void main(String[] args) throws IOException {
         // TODO: 
         // - Fix underscore leading for indentifier
-        // - empty string for string constant
         // - invalid for escaped character string 
         // - multiple line invalid 
         // - invalid for string constant 
