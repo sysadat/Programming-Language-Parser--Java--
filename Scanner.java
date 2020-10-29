@@ -8,6 +8,8 @@ public class Scanner {
     List<String> listOfKeywords;
     int currentLineIndex;
     int currentCharIndex;
+    String[] stringOfSingleCharOperators;
+    String[] stringOfDoubleCharOperators;
     String[] stringOfOperators;
     Set<String> setOfOperators;
     boolean previousConstantOrIdentifier;
@@ -20,9 +22,11 @@ public class Scanner {
         listOfKeywords = keywordlist;
         currentLineIndex = 1;
         currentCharIndex = 0;
-        // TODO
-        // https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
-        stringOfOperators = new String[] {"(", ",", ")", "{", "}", "=", "==", "<", ">", "<=", ">=", "!=", "+", "-", "*", "/", ";"};
+        stringOfSingleCharOperators = new String[] {"(", ",", ")", "{", "}", "=", "<", ">", "+", "-", "*", "/", ";"};
+        stringOfDoubleCharOperators = new String[] {"==", "<=", ">=", "!="};
+        // https://stackoverflow.com/questions/80476/how-can-i-concatenate-two-arrays-in-java
+        stringOfOperators = Arrays.copyOf(stringOfSingleCharOperators, stringOfSingleCharOperators.length + stringOfDoubleCharOperators.length);
+        System.arraycopy(stringOfDoubleCharOperators, 0, stringOfOperators, stringOfSingleCharOperators.length, stringOfDoubleCharOperators.length);
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
         previousConstantOrIdentifier = false;
     }
@@ -378,11 +382,28 @@ public class Scanner {
         // Create a list of strings based on keywords from project 2 description
         // https://javarevisited.blogspot.com/2012/12/how-to-initialize-list-with-array-in-java.html
         // TODO
-        List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
+        // List<String> keywordlist = new ArrayList<String>();
+        // https://www.journaldev.com/33297/java-list-add-addall-methods
+        // keywordlist.add("unsigned");
+        // keywordlist.add("char");
+        // keywordlist.add("short");
+        // keywordlist.add("int");
+        // keywordlist.add("long");
+        // keywordlist.add("float");
+        // keywordlist.add("double");
+        // keywordlist.add("while");
+        // keywordlist.add("if");
+        // keywordlist.add("void");
+        // keywordlist.add("main");
+        // System.out.println(keywordlist);
         StreamClass stream = new StreamClass(inputtedFileName);
+        List<String> keywordlist = Arrays.asList("unsigned", "char", "short", "int", "long", "float", "double", "while", "if", "return", "void", "main");
         Scanner scannerObject = new Scanner(stream, keywordlist);
 
-        scannerObject.tokenizeFile();
+        // scannerObject.tokenizeFile();
+
+        System.out.println(scannerObject.setOfOperators);
+
 
     }
 }

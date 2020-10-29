@@ -70,8 +70,8 @@ Scanner.Java
 - https://stackoverflow.com/questions/3844595/how-can-i-make-java-print-quotes-like-hello#:~:text=print(%22%5C%22Hello%5C,r%22%20and%20%22%5Cn%22
     - Used this website to learn how to print out double quotes in Java.
 
-- https://stackoverflow.com/questions/2041778/how-to-initialize-hashset-values-by-construction
-    - Used this website to learn how to initialize a hash set during construction
+- https://stackoverflow.com/questions/80476/how-can-i-concatenate-two-arrays-in-java
+    - Used this website to learn how to concatante two array of strings in java
 
 - https://beginnersbook.com/2019/04/java-char-to-string-conversion/
     - Used this website to learn how to turn a character into a string. 
