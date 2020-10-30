@@ -316,9 +316,7 @@ public class Scanner {
         }
 
         char nextChar = (char)streamObject.peekNextChar();
-        if (nextChar == '\n') {
-            aheadIndex++;
-        } else if (nextChar == ' ') {
+        if (nextChar == '\n' || nextChar == ' ') {
             aheadIndex++;
         }
         retString = retStringBuilder.toString();
@@ -337,7 +335,7 @@ public class Scanner {
             }
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
-
+            System.out.println("nextChar is:" + nextChar);
             if (currChar == '\"') {
                 doubleQuotesSeen = true;
             }
@@ -361,20 +359,28 @@ public class Scanner {
                 int currStringBuilderLength = currStringBuilder.length();
 
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    System.out.println("S");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    System.out.println("p");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    System.out.println("t");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                        System.out.println("r");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                        System.out.println("e");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                    // TODO
+                    System.out.println("w");
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                    System.out.println("q");
                     break;
                 }
             }
@@ -446,7 +452,6 @@ public class Scanner {
 
     public static void main(String[] args) throws IOException {
         // TODO: 
-        // - Fix underscore leading for indentifier
         // - invalid for escaped character string 
         // - multiple line invalid 
         // - invalid for string constant 
