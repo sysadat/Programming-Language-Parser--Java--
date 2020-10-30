@@ -304,7 +304,7 @@ public class Scanner {
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
                     break;
                 }
             }
@@ -379,7 +379,8 @@ public class Scanner {
                     // TODO
                     System.out.println("w");
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                    // TODO
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
                     System.out.println("q");
                     break;
                 }
