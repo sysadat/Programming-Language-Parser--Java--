@@ -247,13 +247,23 @@ public class Scanner {
             typeOfToken = Token.TokenType.INVALID;
             previousConstantOrIdentifier = false;
         }
-        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
-        if (nextCharIsNewLine) {
-            currentLineIndex++;
-            currentCharIndex = 1;
-            nextCharIsNewLine = false;
+        if (currentCharIndex - currString.length() - 1 == 0) {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
+            if (nextCharIsNewLine) {
+                currentLineIndex++;
+                currentCharIndex = 1;
+                nextCharIsNewLine = false;
+            }
+            return tokenToReturn;
+        } else {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
+            if (nextCharIsNewLine) {
+                currentLineIndex++;
+                currentCharIndex = 1;
+                nextCharIsNewLine = false;
+            }
+            return tokenToReturn;
         }
-        return tokenToReturn;
     }
 
     public String peekString() {
@@ -305,7 +315,8 @@ public class Scanner {
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                     (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0) &&
+                    (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
                 }
             }
@@ -374,10 +385,7 @@ public class Scanner {
                         (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0) &&
-                            (!isAlpha(nextChar) && !isDigit(nextChar) && !isOperator(nextChar, noString, 0)))) {
-                    System.out.println(!isOperator(currChar, noString, 0));
-                    System.out.println(!isAlpha(currChar));
-                    System.out.println("z");
+                            (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
                 }
             }
