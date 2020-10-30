@@ -302,7 +302,8 @@ public class Scanner {
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
                     break;
-                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
+                    (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
                     break;
@@ -335,7 +336,6 @@ public class Scanner {
             }
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
-            System.out.println("nextChar is:" + nextChar);
             if (currChar == '\"') {
                 doubleQuotesSeen = true;
             }
@@ -359,29 +359,25 @@ public class Scanner {
                 int currStringBuilderLength = currStringBuilder.length();
 
                 if (isOperator(noChar, operatorCheck, 1)) {
-                    System.out.println("S");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
-                    System.out.println("p");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
-                    System.out.println("t");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
-                        System.out.println("r");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
-                        System.out.println("e");
                     break;
-                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
-                    // TODO
-                    System.out.println("w");
+                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
+                        (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
-                    // TODO
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
-                    System.out.println("q");
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0) &&
+                            (!isAlpha(nextChar) && !isDigit(nextChar) && !isOperator(nextChar, noString, 0)))) {
+                    System.out.println(!isOperator(currChar, noString, 0));
+                    System.out.println(!isAlpha(currChar));
+                    System.out.println("z");
                     break;
                 }
             }
