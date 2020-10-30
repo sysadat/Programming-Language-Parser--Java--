@@ -317,11 +317,8 @@ public class Scanner {
 
         char nextChar = (char)streamObject.peekNextChar();
         if (nextChar == '\n') {
-            // streamObject.getNextChar();
             aheadIndex++;
-            // nextCharIsNewLine = true;
         } else if (nextChar == ' ') {
-            // streamObject.getNextChar();
             aheadIndex++;
         }
         retString = retStringBuilder.toString();
@@ -403,14 +400,11 @@ public class Scanner {
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
         if (streamObject.moreAvailable()) {
-            // TODO
             String tokenizableString = peekString();
-            System.out.println("Peeked string is: " + tokenizableString);
-            System.out.println("Peeked string length is: " + tokenizableString.length());
             Token retToken = stringToToken(tokenizableString);
             return retToken;
         }
-        Token noneToken = new Token("", Token.TokenType.NONE, ++currentLineIndex, 1);
+        Token noneToken = new Token("", Token.TokenType.NONE, currentLineIndex + 1, 1);
         return noneToken;
     }
 
@@ -418,8 +412,6 @@ public class Scanner {
     public Token getNextToken() {
         if (streamObject.moreAvailable()) {
             String tokenizableString = getString();
-            System.out.println("Get string is: " + tokenizableString);
-            System.out.println("Peeked string length is: " + tokenizableString.length());
             Token retToken = stringToToken(tokenizableString);
             return retToken;
         }
@@ -444,19 +436,12 @@ public class Scanner {
     }
 
     public void tokenizeFile (){
-        boolean tokenizing = true;
-        while (tokenizing) {
-            Token testToken = peekNextToken();
+        while (peekNextToken().getType() != Token.TokenType.NONE) {
             Token newToken = getNextToken();
-            System.out.println();
-            Token.TokenType typeOfToken = newToken.getType();
-            if (typeOfToken != Token.TokenType.NONE) {
-                // printToken(newToken);
-            } else {
-                // printToken(newToken);
-                break;
-            }
+            printToken(newToken);
         }
+        Token noneToken = new Token("", Token.TokenType.NONE, ++currentLineIndex, 1);
+        printToken(noneToken);
     }
 
     public static void main(String[] args) throws IOException {
