@@ -315,8 +315,7 @@ public class Scanner {
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                     (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0) &&
-                    (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
                     break;
                 }
             }
@@ -384,8 +383,7 @@ public class Scanner {
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                         (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0) &&
-                            (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
+                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
                     break;
                 }
             }
