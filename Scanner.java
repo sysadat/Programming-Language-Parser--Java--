@@ -247,9 +247,7 @@ public class Scanner {
             typeOfToken = Token.TokenType.INVALID;
             previousConstantOrIdentifier = false;
         }
-        // TEST
-        // System.out.println("currentCharIndex is :" + currentCharIndex);
-        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
+        Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
         if (nextCharIsNewLine) {
             currentLineIndex++;
             currentCharIndex = 1;
@@ -324,8 +322,7 @@ public class Scanner {
             nextCharIsNewLine = true;
         } else if (nextChar == ' ') {
             streamObject.getNextChar();
-            // TEST
-            // currentCharIndex++;
+            currentCharIndex++;
         }
         retString = retStringBuilder.toString();
         return retString;
