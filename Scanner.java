@@ -256,6 +256,78 @@ public class Scanner {
         return tokenToReturn;
     }
 
+    public String peekString() {
+        boolean doubleQuotesSeen = false;
+        StringBuilder retStringBuilder = new StringBuilder();
+        String retString;
+        int aheadIndex = 0;
+        for (; streamObject.peekAheadChar(aheadIndex)!= -1; aheadIndex++) {
+            boolean retStringBuilderEmpty = false;
+            if (retStringBuilder.length() < 1) {
+                retStringBuilderEmpty = true;
+            }
+            char currChar = (char)streamObject.peekNextChar();
+            char nextChar = (char)streamObject.peekAheadChar(aheadIndex + 1);
+
+            if (currChar == '\"') {
+                doubleQuotesSeen = true;
+            }
+
+            // We want to skip whitespaces during tokenizing
+            if (!doubleQuotesSeen && isWhiteSpace(currChar)) {
+                if (retStringBuilderEmpty) {
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            retStringBuilder.append(currChar);
+
+            if (!doubleQuotesSeen) {
+                String currcharAsString = Character.toString(currChar);
+                String nextCharAsString = Character.toString(nextChar);
+                String operatorCheck = currcharAsString + nextCharAsString;
+                String currStringBuilder = retStringBuilder.toString();
+                int currStringBuilderLength = currStringBuilder.length();
+
+                if (isOperator(noChar, operatorCheck, 1)) {
+                    continue;
+                } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    break;
+                } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    break;
+                } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
+                    (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    break;
+                } else if (isOperator(currChar, noString, 0) && 
+                    (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                    break;
+                } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || !isIdentifier(Character.toString(nextChar)))) {
+                    break;
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                    break;
+                }
+            }
+
+            String builderToString = retStringBuilder.toString();
+            if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
+                break;
+            }
+        }
+
+        char nextChar = (char)streamObject.peekNextChar();
+        if (nextChar == '\n') {
+            // streamObject.getNextChar();
+            aheadIndex++;
+            // nextCharIsNewLine = true;
+        } else if (nextChar == ' ') {
+            // streamObject.getNextChar();
+            aheadIndex++;
+        }
+        retString = retStringBuilder.toString();
+        return retString;
+    }
+
     public String getString () {
         boolean doubleQuotesSeen = false;
         StringBuilder retStringBuilder = new StringBuilder();
@@ -330,14 +402,24 @@ public class Scanner {
 
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
-        // TODO
-        return null;
+        if (streamObject.moreAvailable()) {
+            // TODO
+            String tokenizableString = peekString();
+            System.out.println("Peeked string is: " + tokenizableString);
+            System.out.println("Peeked string length is: " + tokenizableString.length());
+            Token retToken = stringToToken(tokenizableString);
+            return retToken;
+        }
+        Token noneToken = new Token("", Token.TokenType.NONE, ++currentLineIndex, 1);
+        return noneToken;
     }
 
     // Returns the next token and consumes it. If no more tokens are available a None token is returned.
     public Token getNextToken() {
         if (streamObject.moreAvailable()) {
             String tokenizableString = getString();
+            System.out.println("Get string is: " + tokenizableString);
+            System.out.println("Peeked string length is: " + tokenizableString.length());
             Token retToken = stringToToken(tokenizableString);
             return retToken;
         }
@@ -364,12 +446,14 @@ public class Scanner {
     public void tokenizeFile (){
         boolean tokenizing = true;
         while (tokenizing) {
+            Token testToken = peekNextToken();
             Token newToken = getNextToken();
+            System.out.println();
             Token.TokenType typeOfToken = newToken.getType();
             if (typeOfToken != Token.TokenType.NONE) {
-                printToken(newToken);
+                // printToken(newToken);
             } else {
-                printToken(newToken);
+                // printToken(newToken);
                 break;
             }
         }
