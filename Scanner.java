@@ -250,6 +250,7 @@ public class Scanner {
         if (currentCharIndex - currString.length() - 1 == 0) {
             Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
             if (nextCharIsNewLine) {
+                System.out.println("1:" + currentLineIndex + 1);
                 currentLineIndex++;
                 currentCharIndex = 1;
                 nextCharIsNewLine = false;
@@ -258,6 +259,7 @@ public class Scanner {
         } else {
             Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
             if (nextCharIsNewLine) {
+                System.out.println("1:" + currentLineIndex + 1);
                 currentLineIndex++;
                 currentCharIndex = 1;
                 nextCharIsNewLine = false;
@@ -347,7 +349,7 @@ public class Scanner {
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
             if (currChar == '\"') {
-                doubleQuotesSeen = true;
+                doubleQuotesSeen = !doubleQuotesSeen;
             }
 
             // We want to skip whitespaces during tokenizing
@@ -369,27 +371,35 @@ public class Scanner {
                 int currStringBuilderLength = currStringBuilder.length();
 
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    // System.out.println("S");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("E");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("Q");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                    // System.out.println("YOLO");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                    // System.out.println("R");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                         (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
+                    // System.out.println("w");
                     break;
                  } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                    // System.out.println("z");
                     break;
                 }
             }
 
             String builderToString = retStringBuilder.toString();
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
+                // System.out.println("funny monkey gif");
                 break;
             }
         }
@@ -449,14 +459,13 @@ public class Scanner {
             Token newToken = getNextToken();
             printToken(newToken);
         }
+        System.out.println("1:" + currentLineIndex + 1);
         Token noneToken = new Token("", Token.TokenType.NONE, ++currentLineIndex, 1);
         printToken(noneToken);
     }
 
     public static void main(String[] args) throws IOException {
         // TODO: 
-        // - invalid for escaped character string 
-        // - multiple line invalid 
         // - invalid for string constant 
         // - why string constant only comes back with one double quote
 
