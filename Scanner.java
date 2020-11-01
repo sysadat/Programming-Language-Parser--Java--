@@ -229,6 +229,8 @@ public class Scanner {
             }
             char currChar = (char)streamObject.peekAheadChar(aheadIndex);
             char nextChar = (char)streamObject.peekAheadChar(aheadIndex + 1);
+            // System.out.println("peek currChar is: " + currChar);
+            // System.out.println("peek nextChar is: " + nextChar);
 
             if (currChar == '\"') {
                 doubleQuotesSeen = !doubleQuotesSeen;
@@ -251,21 +253,28 @@ public class Scanner {
                 int currStringBuilderLength = currStringBuilder.length();
 
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    // System.out.println("1");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("2");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("3");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                        // System.out.println("4");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                        // System.out.println("5");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                     (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
+                        // System.out.println("6");
                     break;
-                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
+                    // System.out.println("7");
                     break;
                 }
             }
@@ -281,6 +290,7 @@ public class Scanner {
             aheadIndex++;
         }
         retString = retStringBuilder.toString();
+        // System.out.println("retString is: " + retString);
         return retString;
     }
 
@@ -296,6 +306,8 @@ public class Scanner {
             }
             char currChar = (char)streamObject.getNextChar();
             char nextChar = (char)streamObject.peekNextChar();
+            // System.out.println("currChar is: " + currChar);
+            // System.out.println("nextChar is: " + nextChar);
             if (currChar == '\"') {
                 doubleQuotesSeen = !doubleQuotesSeen;
             }
@@ -319,21 +331,28 @@ public class Scanner {
                 int currStringBuilderLength = currStringBuilder.length();
     
                 if (isOperator(noChar, operatorCheck, 1)) {
+                    // System.out.println("1");
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("2");
                     break;
                 } else if (!isOperator(noChar, operatorCheck, 1) && isOperator(currChar, noString, 0) && isOperator(nextChar, noString, 0)) {
+                    // System.out.println("3");
                     break;
                 } else if (previousConstantOrIdentifier && isOperator(currChar, noString, 0) &&
                     (isIntConstant(Character.toString(nextChar)) || isFloatConstant(Character.toString(nextChar)))) {
+                        // System.out.println("4");
                     break;
                 } else if (isOperator(currChar, noString, 0) && 
                     (!isIntConstant(Character.toString(nextChar)) && !isFloatConstant(Character.toString(nextChar)))) {
+                        // System.out.println("5");
                     break;
                 } else if (isIdentifier(currStringBuilder) && (isOperator(nextChar, noString, 0) || 
                         (!isIdentifier(Character.toString(nextChar)) && !isDigit(nextChar)))) {
+                            // System.out.println("6");
                     break;
-                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar))) {
+                 } else if (currStringBuilderLength == 1 && (!isAlpha(currChar) && !isDigit(currChar) && !isOperator(currChar, noString, 0))) {
+                    // System.out.println("7");
                     break;
                 }
             }
@@ -353,6 +372,7 @@ public class Scanner {
             currentCharIndex++;
         }
         retString = retStringBuilder.toString();
+        // System.out.println("retString is GET: " + retString);
         return retString;
     }
 
@@ -407,11 +427,48 @@ public class Scanner {
         }
     }
 
+    public Token stringToTokenForPeek (String currString) {
+        Token.TokenType typeOfToken;
+        boolean isStringKeyword = isKeyword(currString);
+        boolean isStringIdentifier = isIdentifier(currString);
+        boolean isStringOperator = isOperator(noChar, currString, 1);
+        boolean isStringIntConstant = isIntConstant(currString);
+        boolean isStringFloatConstant = isFloatConstant(currString);
+        boolean isStringStringConstant = isStringConstant(currString);
+
+        if (isStringKeyword) {
+            typeOfToken = Token.TokenType.KEYWORD;
+        } else if (isStringIdentifier) {
+            typeOfToken = Token.TokenType.IDENTIFIER;
+        } else if (isStringOperator) {
+            typeOfToken = Token.TokenType.OPERATOR;
+        } else if (isStringIntConstant) {
+            typeOfToken = Token.TokenType.INT_CONSTANT;
+        } else if (isStringFloatConstant) {
+            typeOfToken = Token.TokenType.FLOAT_CONSTANT;
+        } else if (isStringStringConstant) {
+            typeOfToken = Token.TokenType.STRING_CONSTANT;
+        } else {
+            // If the string does not match any of the previous tokens, it is invalid
+            typeOfToken = Token.TokenType.INVALID;
+        }
+        if (currentCharIndex - currString.length() - 1 == 0) {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
+            return tokenToReturn;
+        } else {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
+            return tokenToReturn;
+        }
+    }
+
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
     public Token peekNextToken() {
         if (streamObject.moreAvailable()) {
             String tokenizableString = peekString();
-            Token retToken = stringToToken(tokenizableString);
+            // System.out.println("the tokenized is: " + tokenizableString);
+            Token retToken = stringToTokenForPeek(tokenizableString);
+            // System.out.println();
+            // printToken(retToken);
             return retToken;
         }
         Token noneToken = new Token("", Token.TokenType.NONE, currentLineIndex + 1, 1);
