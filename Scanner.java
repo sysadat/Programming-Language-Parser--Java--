@@ -15,7 +15,7 @@ public class Scanner {
     boolean previousConstantOrIdentifier;
     static String noString = "S";
     static char noChar = 'C';
-    boolean nextCharIsNewLine = false;
+    boolean nextCharIsNewLine;
 
     // Constructor that takes in a stream and a list of keywords.
     public Scanner(StreamClass stream, List<String> keywordlist){
@@ -30,9 +30,10 @@ public class Scanner {
         System.arraycopy(stringOfDoubleCharOperators, 0, stringOfOperators, stringOfSingleCharOperators.length, stringOfDoubleCharOperators.length);
         setOfOperators = new HashSet<>(Arrays.asList(stringOfOperators));
         previousConstantOrIdentifier = false;
+        nextCharIsNewLine = false;
     }
 
-    // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise. 
+    // Check if the string entered is a keyword. Returns true if it is an keyword, false otherwise.
     public boolean isKeyword (String currString) { 
         boolean isKeywordCheck = false;
         if (listOfKeywords.contains(currString)) {
@@ -96,6 +97,7 @@ public class Scanner {
         if (currString.charAt(0) == '-') {
             if (stringLength == 1) {
                 isIntConstantCheck = false;
+                return isIntConstantCheck;
             }
             i = 1;
         }
@@ -138,6 +140,7 @@ public class Scanner {
         if (stringLength < 2) {
             return false;
         } else if (stringLength == 2) {
+            // Empty string is still a string constant
             char initialIndex = currString.charAt(0);
             char secondIndex = currString.charAt(1);
             if (initialIndex == '\"' && secondIndex == '\"') {
@@ -146,22 +149,30 @@ public class Scanner {
         }
         int lastIndexInt = stringLength - 1;
         boolean isStringConstantCheck = false;
+        // TESTING
         char firstIndex = currString.charAt(0);
         char lastIndex = currString.charAt(lastIndexInt);
+        System.out.println("currString is :" + currString);
+        System.out.println("stringLength is :" + stringLength);
+        System.out.println("lastIndexInt is :" + lastIndexInt);
+        System.out.println("firstIndex is :" + firstIndex);
+        System.out.println("lastIndex is :" + lastIndex);
+        // System.out.println("lastIndex test is :" + currString.charAt(stringLength));
 
         if (firstIndex != '\"' || lastIndex != '\"' ) {
+            System.out.println("do we get here?");
             isStringConstantCheck = false;
         } else {
             for (int i = 1; i < lastIndexInt; i++) {
                 char currChar = currString.charAt(i);
-                if (!isCharacterLiteral(currChar) || !isEscapedCharacter(currChar)) {
+                if (!isCharacterLiteral(currChar) && !isEscapedCharacter(currChar)) {
                     isStringConstantCheck = false;
-                    break;
+                    return isStringConstantCheck;
                 }
             }
             isStringConstantCheck = true;
         }
-
+        System.out.println("return value is :" + isStringConstantCheck);
         return isStringConstantCheck;
     }
 
@@ -213,57 +224,6 @@ public class Scanner {
             isEscapedCharacterCheck = true;
         }
         return isEscapedCharacterCheck;
-    }
-
-    public Token stringToToken (String currString) {
-        Token.TokenType typeOfToken;
-        boolean isStringKeyword = isKeyword(currString);
-        boolean isStringIdentifier = isIdentifier(currString);
-        boolean isStringOperator = isOperator(noChar, currString, 1);
-        boolean isStringIntConstant = isIntConstant(currString);
-        boolean isStringFloatConstant = isFloatConstant(currString);
-        boolean isStringStringConstant = isStringConstant(currString);
-
-        if (isStringKeyword) {
-            typeOfToken = Token.TokenType.KEYWORD;
-            previousConstantOrIdentifier = false;
-        } else if (isStringIdentifier) {
-            typeOfToken = Token.TokenType.IDENTIFIER;
-            previousConstantOrIdentifier = true;
-        } else if (isStringOperator) {
-            typeOfToken = Token.TokenType.OPERATOR;
-            previousConstantOrIdentifier = false;
-        } else if (isStringIntConstant) {
-            typeOfToken = Token.TokenType.INT_CONSTANT;
-            previousConstantOrIdentifier = true;
-        } else if (isStringFloatConstant) {
-            typeOfToken = Token.TokenType.FLOAT_CONSTANT;
-            previousConstantOrIdentifier = true;
-        } else if (isStringStringConstant) {
-            typeOfToken = Token.TokenType.STRING_CONSTANT;
-            previousConstantOrIdentifier = true;
-        } else {
-            // If the string does not match any of the previous tokens, it is invalid
-            typeOfToken = Token.TokenType.INVALID;
-            previousConstantOrIdentifier = false;
-        }
-        if (currentCharIndex - currString.length() - 1 == 0) {
-            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
-            if (nextCharIsNewLine) {
-                currentLineIndex++;
-                currentCharIndex = 1;
-                nextCharIsNewLine = false;
-            }
-            return tokenToReturn;
-        } else {
-            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
-            if (nextCharIsNewLine) {
-                currentLineIndex++;
-                currentCharIndex = 1;
-                nextCharIsNewLine = false;
-            }
-            return tokenToReturn;
-        }
     }
 
     public String peekString() {
@@ -321,6 +281,8 @@ public class Scanner {
             }
 
             String builderToString = retStringBuilder.toString();
+            // TESTING
+            // System.out.println("peek call");
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
                 break;
             }
@@ -389,7 +351,10 @@ public class Scanner {
             }
 
             String builderToString = retStringBuilder.toString();
+            // Testing
+            // System.out.println("get call");
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
+                System.out.println("1");
                 break;
             }
         }
@@ -403,7 +368,59 @@ public class Scanner {
             currentCharIndex++;
         }
         retString = retStringBuilder.toString();
+        System.out.println("RETSTRING is: " + retString);
         return retString;
+    }
+
+    public Token stringToToken (String currString) {
+        Token.TokenType typeOfToken;
+        boolean isStringKeyword = isKeyword(currString);
+        boolean isStringIdentifier = isIdentifier(currString);
+        boolean isStringOperator = isOperator(noChar, currString, 1);
+        boolean isStringIntConstant = isIntConstant(currString);
+        boolean isStringFloatConstant = isFloatConstant(currString);
+        boolean isStringStringConstant = isStringConstant(currString);
+
+        if (isStringKeyword) {
+            typeOfToken = Token.TokenType.KEYWORD;
+            previousConstantOrIdentifier = false;
+        } else if (isStringIdentifier) {
+            typeOfToken = Token.TokenType.IDENTIFIER;
+            previousConstantOrIdentifier = true;
+        } else if (isStringOperator) {
+            typeOfToken = Token.TokenType.OPERATOR;
+            previousConstantOrIdentifier = false;
+        } else if (isStringIntConstant) {
+            typeOfToken = Token.TokenType.INT_CONSTANT;
+            previousConstantOrIdentifier = true;
+        } else if (isStringFloatConstant) {
+            typeOfToken = Token.TokenType.FLOAT_CONSTANT;
+            previousConstantOrIdentifier = true;
+        } else if (isStringStringConstant) {
+            typeOfToken = Token.TokenType.STRING_CONSTANT;
+            previousConstantOrIdentifier = true;
+        } else {
+            // If the string does not match any of the previous tokens, it is invalid
+            typeOfToken = Token.TokenType.INVALID;
+            previousConstantOrIdentifier = false;
+        }
+        if (currentCharIndex - currString.length() - 1 == 0) {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length());
+            if (nextCharIsNewLine) {
+                currentLineIndex++;
+                currentCharIndex = 1;
+                nextCharIsNewLine = false;
+            }
+            return tokenToReturn;
+        } else {
+            Token tokenToReturn = new Token(currString, typeOfToken, currentLineIndex, currentCharIndex - currString.length() - 1);
+            if (nextCharIsNewLine) {
+                currentLineIndex++;
+                currentCharIndex = 1;
+                nextCharIsNewLine = false;
+            }
+            return tokenToReturn;
+        }
     }
 
     // Returns the next token without consuming it. If no more tokens are available a None token is returned. 
