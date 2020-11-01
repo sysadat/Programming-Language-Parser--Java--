@@ -149,18 +149,10 @@ public class Scanner {
         }
         int lastIndexInt = stringLength - 1;
         boolean isStringConstantCheck = false;
-        // TESTING
         char firstIndex = currString.charAt(0);
         char lastIndex = currString.charAt(lastIndexInt);
-        System.out.println("currString is :" + currString);
-        System.out.println("stringLength is :" + stringLength);
-        System.out.println("lastIndexInt is :" + lastIndexInt);
-        System.out.println("firstIndex is :" + firstIndex);
-        System.out.println("lastIndex is :" + lastIndex);
-        // System.out.println("lastIndex test is :" + currString.charAt(stringLength));
 
         if (firstIndex != '\"' || lastIndex != '\"' ) {
-            System.out.println("do we get here?");
             isStringConstantCheck = false;
         } else {
             for (int i = 1; i < lastIndexInt; i++) {
@@ -172,7 +164,6 @@ public class Scanner {
             }
             isStringConstantCheck = true;
         }
-        System.out.println("return value is :" + isStringConstantCheck);
         return isStringConstantCheck;
     }
 
@@ -236,11 +227,11 @@ public class Scanner {
             if (retStringBuilder.length() < 1) {
                 retStringBuilderEmpty = true;
             }
-            char currChar = (char)streamObject.peekNextChar();
+            char currChar = (char)streamObject.peekAheadChar(aheadIndex);
             char nextChar = (char)streamObject.peekAheadChar(aheadIndex + 1);
 
             if (currChar == '\"') {
-                doubleQuotesSeen = true;
+                doubleQuotesSeen = !doubleQuotesSeen;
             }
 
             // We want to skip whitespaces during tokenizing
@@ -252,7 +243,6 @@ public class Scanner {
                 }
             }
             retStringBuilder.append(currChar);
-
             if (!doubleQuotesSeen) {
                 String currcharAsString = Character.toString(currChar);
                 String nextCharAsString = Character.toString(nextChar);
@@ -281,8 +271,6 @@ public class Scanner {
             }
 
             String builderToString = retStringBuilder.toString();
-            // TESTING
-            // System.out.println("peek call");
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
                 break;
             }
@@ -329,7 +317,7 @@ public class Scanner {
                 String operatorCheck = currcharAsString + nextCharAsString;
                 String currStringBuilder = retStringBuilder.toString();
                 int currStringBuilderLength = currStringBuilder.length();
-
+    
                 if (isOperator(noChar, operatorCheck, 1)) {
                     continue;
                 } else if ((isIntConstant(currStringBuilder) || isFloatConstant(currStringBuilder)) && isOperator(nextChar, noString, 0)) {
@@ -351,10 +339,7 @@ public class Scanner {
             }
 
             String builderToString = retStringBuilder.toString();
-            // Testing
-            // System.out.println("get call");
             if (isOperator(nextChar, noString, 0) && isStringConstant(builderToString)) {
-                System.out.println("1");
                 break;
             }
         }
@@ -368,7 +353,6 @@ public class Scanner {
             currentCharIndex++;
         }
         retString = retStringBuilder.toString();
-        System.out.println("RETSTRING is: " + retString);
         return retString;
     }
 
