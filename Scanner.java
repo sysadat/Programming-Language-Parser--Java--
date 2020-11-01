@@ -276,7 +276,7 @@ public class Scanner {
             }
         }
 
-        char nextChar = (char)streamObject.peekNextChar();
+        char nextChar = (char)streamObject.peekAheadChar(aheadIndex + 1);
         if (nextChar == '\n' || nextChar == ' ') {
             aheadIndex++;
         }
